@@ -73,6 +73,114 @@ export class Renderer {
       return;
     }
 
+    // --- Database type: cylinder shape ---
+    if (node.type === 'database') {
+      const centerX = x + w / 2;
+      const ellipseHeight = h * 0.2; // Height of the ellipse "lid"
+      const bodyHeight = h - ellipseHeight;
+
+      // Fade-in animation
+      let fadeAlpha = 1;
+      if (fading && fading[key]) {
+        const elapsed = Date.now() - fading[key];
+        fadeAlpha = Math.min(elapsed / 500, 1);
+        if (elapsed > 500) delete fading[key];
+      }
+
+      // Glow when active or badged
+      if (isActive || hasBadge) {
+        ctx.shadowColor = node.color;
+        ctx.shadowBlur = ts(18) * fadeAlpha;
+        ctx.globalAlpha = 0.3 + 0.7 * fadeAlpha;
+      }
+
+      ctx.fillStyle = (isActive || hasBadge) ? colors.boxA : colors.box;
+      ctx.strokeStyle = (isActive || hasBadge) ? node.color : colors.bdr;
+      ctx.lineWidth = ts((isActive || hasBadge) ? 2.5 : 1.5);
+
+      // Draw the cylinder body (background fill)
+      ctx.beginPath();
+      ctx.moveTo(x, y + ellipseHeight);
+      ctx.lineTo(x, y + h);
+      ctx.ellipse(centerX, y + h, w / 2, ellipseHeight, 0, 0, Math.PI);
+      ctx.lineTo(x + w, y + ellipseHeight);
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw the top ellipse (filled)
+      ctx.beginPath();
+      ctx.ellipse(centerX, y + ellipseHeight, w / 2, ellipseHeight, 0, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Draw the outline
+      ctx.beginPath();
+      // Top ellipse
+      ctx.ellipse(centerX, y + ellipseHeight, w / 2, ellipseHeight, 0, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      // Side lines
+      ctx.beginPath();
+      ctx.moveTo(x, y + ellipseHeight);
+      ctx.lineTo(x, y + h);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(x + w, y + ellipseHeight);
+      ctx.lineTo(x + w, y + h);
+      ctx.stroke();
+
+      // Bottom arc
+      ctx.beginPath();
+      ctx.ellipse(centerX, y + h, w / 2, ellipseHeight, 0, 0, Math.PI);
+      ctx.stroke();
+
+      // Reset shadow
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+
+      // --- Label text (centered in the body) ---
+      const fs = node.fontSize || 16;
+      ctx.fillStyle = colors.txt;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const labelY = y + ellipseHeight + bodyHeight / 2;
+
+      if (node.sublabel) {
+        ctx.font = `bold ${ts(fs)}px system-ui`;
+        ctx.fillText(node.label, centerX, labelY - ts(8));
+        ctx.font = `${ts(Math.max(fs - 3, 11))}px system-ui`;
+        ctx.fillStyle = colors.dim;
+        ctx.fillText(node.sublabel, centerX, labelY + ts(8));
+      } else {
+        ctx.font = `bold ${ts(fs)}px system-ui`;
+        ctx.fillText(node.label, centerX, labelY);
+      }
+
+      // --- Numbered badge circles ---
+      if (hasBadge) {
+        const badgeList = Array.isArray(badges[key]) ? badges[key] : [badges[key]];
+        badgeList.forEach((badgeNum, idx) => {
+          const bx = x + ts(8) + idx * ts(22);
+          const by = y + ts(5);
+          const br = ts(9);
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+          ctx.beginPath();
+          ctx.arc(bx + br, by + br, br, 0, Math.PI * 2);
+          ctx.fillStyle = node.color;
+          ctx.fill();
+          ctx.font = `bold ${ts(10)}px system-ui`;
+          ctx.fillStyle = isDark ? '#0d1117' : '#fff';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(String(badgeNum), bx + br, by + br);
+        });
+      }
+
+      ctx.restore();
+      return;
+    }
+
     // --- Fade-in animation ---
     let fadeAlpha = 1;
     if (fading && fading[key]) {
