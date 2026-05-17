@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Minting Flow</title>
+    <link rel="stylesheet" href="./templates/style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        /* Hide flow selector since we only have one flow */
+        #fs-flow-select {
+            display: none;
+        }
+        /* Add title to the panel instead */
+        .fs-flow-bar::before {
+            content: "Key Minting Flow";
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 0;
+            color: var(--fs-text-primary, #c9d1d9);
+        }
+    </style>
+</head>
+<body>
+
+<button class="fs-theme-toggle" id="fs-theme">&#9790;</button>
+
+<div class="fs-brand" id="fs-brand"></div>
+<div class="fs-title" id="fs-title"></div>
+
+<div class="fs-panel">
+  <div class="fs-flow-bar">
+    <select id="fs-flow-select"></select>
+    <button class="fs-start" id="fs-play">&#9654; Start</button>
+    <button id="fs-speed">1x</button>
+    <button id="fs-loop" style="border-color:#3fb950;color:#3fb950">&#8635; Loop</button>
+    <button class="fs-reset" id="fs-reset">Reset</button>
+  </div>
+  <div class="fs-steps" id="fs-steps">
+    <div class="fs-steps-title">Flow Steps <span style="font-weight:400;font-size:11px;color:var(--fs-text-dim)">· click to jump</span></div>
+    <div id="fs-steps-container"></div>
+  </div>
+  <div class="fs-inspector" id="fs-inspector">
+    <div class="fs-inspector-title" id="fs-inspector-title" style="color:var(--fs-accent)">Component</div>
+    <div id="fs-inspector-content"></div>
+  </div>
+</div>
+
+<div id="fs-highlight-box" style="display:none;position:fixed;z-index:350;border-radius:10px;pointer-events:none"></div>
+<div id="fs-overlay" style="display:none;position:fixed;top:0;left:0;right:380px;bottom:0;z-index:300;background:rgba(0,0,0,0.6)">
+  <div id="fs-overlay-card" style="position:absolute;background:#161b22ee;border:1px solid #30363d;border-radius:14px;max-width:420px;padding:22px 26px;box-shadow:0 12px 40px rgba(0,0,0,0.5)">
+    <button id="fs-overlay-close" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#8b949e;font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px">✕</button>
+    <div id="fs-overlay-accent" style="width:4px;height:24px;border-radius:2px;position:absolute;left:0;top:22px"></div>
+    <h2 id="fs-overlay-title" style="margin:0 0 6px;font-size:18px;color:#c9d1d9;font-family:system-ui"></h2>
+    <p id="fs-overlay-desc" style="margin:0 0 14px;font-size:13px;color:#8b949e;line-height:1.5;font-family:system-ui"></p>
+    <div id="fs-overlay-details" style="font-size:12px;font-family:'SF Mono',Menlo,monospace"></div>
+    <button id="fs-overlay-resume" style="margin-top:14px;padding:7px 20px;border:1px solid #3fb950;border-radius:8px;background:transparent;color:#3fb950;font-size:13px;cursor:pointer;font-family:system-ui">&#9654; Resume Flow</button>
+  </div>
+</div>
+
+<div class="fs-legend" id="fs-legend"></div>
+
+<canvas id="fs-canvas"></canvas>
+
+    <script type="module">
+        import { FlowStory } from './dist/flowstory.min.js';
+
+        (async () => {
+        const viz = new FlowStory(document.getElementById('fs-canvas'), {
+            stepsContainer: document.getElementById('fs-steps-container'),
+            inspectorTitle: document.getElementById('fs-inspector-title'),
+            inspectorContent: document.getElementById('fs-inspector-content'),
+            overlay: document.getElementById('fs-overlay'),
+            overlayCard: document.getElementById('fs-overlay-card'),
+            overlayTitle: document.getElementById('fs-overlay-title'),
+            overlayDesc: document.getElementById('fs-overlay-desc'),
+            overlayDetails: document.getElementById('fs-overlay-details'),
+            overlayAccent: document.getElementById('fs-overlay-accent'),
+            overlayClose: document.getElementById('fs-overlay-close'),
+            overlayResume: document.getElementById('fs-overlay-resume'),
+            highlightBox: document.getElementById('fs-highlight-box'),
+            brand: document.getElementById('fs-brand'),
+            title: document.getElementById('fs-title'),
+            legend: document.getElementById('fs-legend'),
+            flowSelect: document.getElementById('fs-flow-select'),
+            playBtn: document.getElementById('fs-play'),
+            speedBtn: document.getElementById('fs-speed'),
+            loopBtn: document.getElementById('fs-loop'),
+            resetBtn: document.getElementById('fs-reset'),
+            themeBtn: document.getElementById('fs-theme'),
+        });
+
+        window.__flowstory = viz;
+
+        const diagram = {
+            "meta": {
+                "title": "",
+                "author": "OpenDataHub MaaS Team"
+            },
+            "canvas": {
+                "width": 1600,
+                "height": 950
+            },
+            "nodes": {
+                "cluster": {
+                    "x": 180,
+                    "y": 50,
+                    "w": 1050,
+                    "h": 870,
+                    "type": "boundary",
+                    "label": "Kubernetes Cluster",
+                    "color": "#f0883e",
+                    "bgColor": "#fff5ed"
+                },
+                "user": {
+                    "x": 20,
+                    "y": 260,
+                    "w": 120,
+                    "h": 80,
+                    "type": "icon",
+                    "label": "User"
+                },
+                "maas-boundary": {
+                    "x": 220,
+                    "y": 130,
+                    "w": 980,
+                    "h": 750,
+                    "type": "boundary",
+                    "label": "Models as a Service",
+                    "color": "#1976d2",
+                    "bgColor": "#f0f8ff"
+                },
+                "gateway": {
+                    "x": 260,
+                    "y": 180,
+                    "w": 900,
+                    "h": 90,
+                    "type": "box",
+                    "label": "Gateway",
+                    "sublabel": "Gateway API / HTTPRoute",
+                    "color": "#7b1fa2",
+                    "fontSize": 18
+                },
+                "authpolicy": {
+                    "x": 600,
+                    "y": 320,
+                    "w": 220,
+                    "h": 90,
+                    "type": "box",
+                    "label": "AuthPolicy",
+                    "sublabel": "Authorino",
+                    "color": "#e65100"
+                },
+                "maas-api": {
+                    "x": 260,
+                    "y": 460,
+                    "w": 900,
+                    "h": 360,
+                    "type": "container",
+                    "label": "MaaS API",
+                    "sublabel": "Key Minting Service",
+                    "color": "#1976d2"
+                },
+                "generate": {
+                    "x": 300,
+                    "y": 550,
+                    "w": 220,
+                    "h": 90,
+                    "type": "plugin",
+                    "label": "Generate Key",
+                    "sublabel": "sk-oai-*",
+                    "color": "#4CAF50",
+                    "inner": true
+                },
+                "hash": {
+                    "x": 580,
+                    "y": 550,
+                    "w": 200,
+                    "h": 90,
+                    "type": "plugin",
+                    "label": "Hash",
+                    "sublabel": "SHA-256",
+                    "color": "#FFA726",
+                    "inner": true
+                },
+                "store": {
+                    "x": 840,
+                    "y": 550,
+                    "w": 250,
+                    "h": 90,
+                    "type": "plugin",
+                    "label": "Store",
+                    "sublabel": "metadata",
+                    "color": "#9C27B0",
+                    "inner": true
+                },
+                "postgres": {
+                    "x": 1320,
+                    "y": 560,
+                    "w": 250,
+                    "h": 120,
+                    "type": "database",
+                    "label": "PostgreSQL",
+                    "sublabel": "External Database",
+                    "color": "#336791"
+                }
+            },
+            "flows": {
+                "key-minting": {
+                    "label": "Key Minting Flow",
+                    "steps": [
+                        {
+                            "text": "1. POST /maas-api/v1/api-keys",
+                            "mode": "arrow",
+                            "from": "user",
+                            "to": "gateway",
+                            "num": 1,
+                            "color": "#1976d2",
+                            "fromRight": true,
+                            "toLeft": true,
+                            "yOff": -20
+                        },
+                        {
+                            "text": "2. Gateway → AuthPolicy",
+                            "mode": "arrow",
+                            "from": "gateway",
+                            "to": "authpolicy",
+                            "num": 2,
+                            "color": "#7b1fa2"
+                        },
+                        {
+                            "text": "3. Validate identity token",
+                            "mode": "lightup",
+                            "target": "authpolicy",
+                            "badge": 3,
+                            "color": "#e65100"
+                        },
+                        {
+                            "text": "4. Request enters MaaS API",
+                            "mode": "arrow",
+                            "from": "authpolicy",
+                            "to": "generate",
+                            "num": 4,
+                            "color": "#1976d2",
+                            "fromBottom": true,
+                            "toTop": true,
+                            "glow": "maas-api"
+                        },
+                        {
+                            "text": "5. Generate sk-oai-* key",
+                            "mode": "lightup",
+                            "target": "generate",
+                            "badge": 5,
+                            "color": "#4CAF50"
+                        },
+                        {
+                            "text": "6. Hash with SHA-256",
+                            "mode": "arrow",
+                            "from": "generate",
+                            "to": "hash",
+                            "num": 6,
+                            "color": "#FFA726"
+                        },
+                        {
+                            "text": "7. Prepare metadata",
+                            "mode": "arrow",
+                            "from": "hash",
+                            "to": "store",
+                            "num": 7,
+                            "color": "#9C27B0"
+                        },
+                        {
+                            "text": "8. Store hash + metadata",
+                            "mode": "arrow",
+                            "from": "store",
+                            "to": "postgres",
+                            "num": 8,
+                            "color": "#336791",
+                            "fromRight": true,
+                            "toLeft": true
+                        },
+                        {
+                            "text": "9. Plaintext key returned (show-once)",
+                            "mode": "arrow",
+                            "from": "maas-api",
+                            "to": "user",
+                            "num": 9,
+                            "color": "#3fb950",
+                            "fromLeft": true,
+                            "toRight": true,
+                            "yOff": 20
+                        }
+                    ]
+                }
+            }
+        };
+
+        // Add tooltips for inspector
+        diagram.tooltips = {
+            "cluster": {
+                "title": "Kubernetes Cluster",
+                "body": "OpenShift or upstream Kubernetes cluster hosting the MaaS platform and model serving infrastructure."
+            },
+            "maas-boundary": {
+                "title": "Models as a Service Platform",
+                "body": "Kubernetes-native platform for managing inference model endpoints with policy-based auth and rate limiting."
+            },
+            "user": {
+                "title": "User / Client Application",
+                "body": "End user or application requesting an API key for programmatic access to MaaS models."
+            },
+            "gateway": {
+                "title": "Gateway API",
+                "body": "Entry point for all traffic. Routes requests and enforces policies using Kubernetes Gateway API."
+            },
+            "authpolicy": {
+                "title": "AuthPolicy (Authorino)",
+                "body": "Validates user identity via kubernetesTokenReview or OIDC JWT validation before allowing key minting."
+            },
+            "maas-api": {
+                "title": "MaaS API Service",
+                "body": "Key minting service that generates API keys, hashes them, and stores metadata."
+            },
+            "generate": {
+                "title": "Generate API Key",
+                "body": "Creates a random sk-oai-* prefixed API key. This plaintext key is returned to the user only once."
+            },
+            "hash": {
+                "title": "Hash Key",
+                "body": "Hashes the API key using SHA-256. Only the hash is stored, never the plaintext key."
+            },
+            "store": {
+                "title": "Store Metadata",
+                "body": "Prepares key metadata including username, groups, subscription binding, and expiration timestamp."
+            },
+            "postgres": {
+                "title": "PostgreSQL Database (External)",
+                "body": "External database outside the cluster storing hashed keys, subscription bindings, and metadata. Not included in MaaS deployment - must be provisioned separately."
+            }
+        };
+
+        try {
+            await viz.load(diagram);
+
+            // Auto-play with loop on page load
+            viz.state.loopMode = true;
+            const loopBtn = document.getElementById('fs-loop');
+            if (loopBtn) {
+                loopBtn.textContent = '⟳ Loop ON';
+                loopBtn.style.borderColor = '#3fb950';
+                loopBtn.style.color = '#3fb950';
+            }
+            viz.play();
+        } catch (e) {
+            console.error('FlowStory load error:', e);
+            document.body.innerHTML = `<div style="padding:40px;color:#f85149;font-family:monospace"><h2>FlowStory Load Error</h2><pre>${e.message}\n\n${e.stack || ''}</pre></div>`;
+        }
+        })();
+    </script>
+</body>
+</html>
