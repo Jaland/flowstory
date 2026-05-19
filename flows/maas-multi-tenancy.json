@@ -1,0 +1,768 @@
+{
+  "meta": {
+    "title": "MaaS Multi-Tenancy Architecture (RHAIRFE-1487)",
+    "author": "James Land",
+    "branding": {
+      "logo": "assets/openshift-icon.svg",
+      "title": "OpenShift AI"
+    }
+  },
+  "canvas": {
+    "width": 1400,
+    "height": 1100
+  },
+  "nodes": {
+    "admin": {
+      "x": -60,
+      "y": 80,
+      "w": 120,
+      "h": 60,
+      "label": "Platform Admin",
+      "type": "icon"
+    },
+    "user": {
+      "x": -60,
+      "y": 480,
+      "w": 120,
+      "h": 60,
+      "label": "Tenant User",
+      "type": "icon"
+    },
+    "client": {
+      "x": -60,
+      "y": 780,
+      "w": 120,
+      "h": 60,
+      "label": "API Client",
+      "type": "icon"
+    },
+    "maas-controller": {
+      "x": 150,
+      "y": 60,
+      "w": 200,
+      "h": 70,
+      "label": "maas-controller",
+      "sublabel": "Reconciler",
+      "color": "#58a6ff"
+    },
+    "control-ns": {
+      "x": 430,
+      "y": 30,
+      "w": 240,
+      "h": 130,
+      "label": "models-as-a-service",
+      "sublabel": "Control Plane Namespace",
+      "type": "container",
+      "color": "#8b949e"
+    },
+    "aigateway-cr": {
+      "x": 450,
+      "y": 65,
+      "w": 200,
+      "h": 60,
+      "label": "AIGateway CR",
+      "sublabel": "tenant-acme",
+      "color": "#d2a8ff",
+      "inner": true
+    },
+    "gateway-cr": {
+      "x": 760,
+      "y": 65,
+      "w": 180,
+      "h": 60,
+      "label": "Gateway CR",
+      "sublabel": "acme-gateway",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "tenant-ns": {
+      "x": 430,
+      "y": 200,
+      "w": 510,
+      "h": 180,
+      "label": "tenant-acme-ns",
+      "sublabel": "Tenant Admin Namespace",
+      "type": "container",
+      "color": "#d2a8ff"
+    },
+    "subscription": {
+      "x": 450,
+      "y": 235,
+      "w": 220,
+      "h": 55,
+      "label": "MaaSSubscription",
+      "sublabel": "gpt-4-sub",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "authpolicy-cr": {
+      "x": 450,
+      "y": 305,
+      "w": 220,
+      "h": 55,
+      "label": "MaaSAuthPolicy",
+      "sublabel": "acme-policy",
+      "color": "#3fb950",
+      "inner": true
+    },
+    "oidc-config": {
+      "x": 695,
+      "y": 235,
+      "w": 220,
+      "h": 55,
+      "label": "OIDC Config",
+      "sublabel": "acme-idp.example.com",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "apikey-policy": {
+      "x": 695,
+      "y": 305,
+      "w": 220,
+      "h": 55,
+      "label": "API Key Policy",
+      "sublabel": "max expiry, rules",
+      "color": "#79c0ff",
+      "inner": true
+    },
+    "maas-api": {
+      "x": 150,
+      "y": 450,
+      "w": 200,
+      "h": 70,
+      "label": "maas-api",
+      "sublabel": "Key Service",
+      "color": "#58a6ff"
+    },
+    "postgres": {
+      "x": 430,
+      "y": 450,
+      "w": 200,
+      "h": 70,
+      "label": "PostgreSQL",
+      "sublabel": "api_keys table",
+      "color": "#3fb950"
+    },
+    "oidc-provider": {
+      "x": 710,
+      "y": 450,
+      "w": 200,
+      "h": 70,
+      "label": "OIDC Provider",
+      "sublabel": "Tenant IdP",
+      "color": "#f0883e"
+    },
+    "gateway": {
+      "x": 150,
+      "y": 750,
+      "w": 200,
+      "h": 80,
+      "label": "Gateway",
+      "sublabel": "acme-gateway (Envoy)",
+      "color": "#f0883e"
+    },
+    "authorino": {
+      "x": 430,
+      "y": 750,
+      "w": 200,
+      "h": 80,
+      "label": "Authorino",
+      "sublabel": "Auth Layer",
+      "color": "#d2a8ff"
+    },
+    "httproute": {
+      "x": 710,
+      "y": 750,
+      "w": 200,
+      "h": 80,
+      "label": "HTTPRoute",
+      "sublabel": "/v1/chat/completions",
+      "color": "#58a6ff"
+    },
+    "authpolicy": {
+      "x": 990,
+      "y": 680,
+      "w": 200,
+      "h": 60,
+      "label": "AuthPolicy",
+      "sublabel": "Tenant-scoped",
+      "color": "#3fb950"
+    },
+    "ratelimit": {
+      "x": 990,
+      "y": 760,
+      "w": 200,
+      "h": 60,
+      "label": "TokenRateLimitPolicy",
+      "sublabel": "Tenant discriminator",
+      "color": "#79c0ff"
+    },
+    "model": {
+      "x": 1240,
+      "y": 750,
+      "w": 200,
+      "h": 80,
+      "label": "Model Backend",
+      "sublabel": "LLMInferenceService",
+      "color": "#3fb950"
+    }
+  },
+  "tooltips": {
+    "aigateway-cr": {
+      "title": "AIGateway Custom Resource",
+      "description": "New CR that replaces the Tenant CR. Lives in models-as-a-service namespace. Creating it triggers the controller to provision a full tenant environment.",
+      "details": [
+        ["Namespace", "models-as-a-service"],
+        ["Creates", "Gateway CR + Tenant Namespace"],
+        ["Contains", "OIDC config, API key policy, telemetry settings"]
+      ]
+    },
+    "tenant-ns": {
+      "title": "Tenant Admin Namespace",
+      "description": "Automatically created namespace for each tenant. Contains all tenant-scoped MaaS resources.",
+      "details": [
+        ["Label", "maas.opendatahub.io/tenant: acme"],
+        ["Contains", "MaaSSubscription, MaaSAuthPolicy"],
+        ["Isolation", "Per-tenant policy and resource boundaries"]
+      ]
+    },
+    "maas-api": {
+      "title": "MaaS API Service",
+      "description": "Shared API service for all tenants. Handles API key minting, validation, and subscription selection with tenant isolation.",
+      "details": [
+        ["Endpoint", "/v1/api-keys (mint)"],
+        ["Internal", "/internal/v1/api-keys/validate"],
+        ["Storage", "PostgreSQL with tenant column"]
+      ]
+    },
+    "postgres": {
+      "title": "API Keys Database",
+      "description": "PostgreSQL table storing API keys with tenant identity column for isolation.",
+      "details": [
+        ["Table", "api_keys"],
+        ["Tenant Column", "tenant (TEXT) - namespace or slug"],
+        ["Fields", "subscription, groups, tenant"]
+      ]
+    },
+    "authorino": {
+      "title": "Authorino Auth Service",
+      "description": "Validates API keys and enforces tenant-scoped policies. Calls maas-api for key validation with tenant context.",
+      "details": [
+        ["Validates", "API keys with tenant context"],
+        ["Calls", "maas-api /internal/v1/api-keys/validate"],
+        ["Enforces", "Tenant + subscription + groups"]
+      ]
+    },
+    "authpolicy": {
+      "title": "AuthPolicy",
+      "description": "Kuadrant AuthPolicy aggregated from tenant namespace MaaSAuthPolicy CRs. Enforces who can access which models.",
+      "details": [
+        ["Source", "MaaSAuthPolicy in tenant namespace"],
+        ["Scope", "Per-tenant, attached to HTTPRoute"],
+        ["Validates", "Tenant identity, groups, subscription"]
+      ]
+    },
+    "ratelimit": {
+      "title": "TokenRateLimitPolicy",
+      "description": "Token-based rate limiting with tenant discrimination to prevent cross-tenant quota sharing.",
+      "details": [
+        ["Source", "MaaSSubscription in tenant namespace"],
+        ["Discriminator", "X-MaaS-Tenant header"],
+        ["Scope", "Per-tenant + per-subscription"]
+      ]
+    }
+  },
+  "flows": {
+    "create-tenant": {
+      "label": "1. AIGateway Creation",
+      "steps": [
+        {
+          "text": "Admin creates AIGateway CR in models-as-a-service namespace",
+          "mode": "arrow",
+          "from": "admin",
+          "to": "aigateway-cr",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "maas-controller watches AIGateway CR",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "aigateway-cr",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Controller creates labeled Gateway CR",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "gateway-cr",
+          "color": "#f0883e",
+          "num": 3,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Controller creates tenant admin namespace",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "tenant-ns",
+          "color": "#d2a8ff",
+          "num": 4,
+          "fromRight": true,
+          "toTop": true
+        },
+        {
+          "text": "Tenant namespace populated with MaaSSubscription",
+          "mode": "lightup",
+          "target": "subscription",
+          "badge": "5"
+        },
+        {
+          "text": "Tenant namespace populated with MaaSAuthPolicy",
+          "mode": "lightup",
+          "target": "authpolicy-cr",
+          "badge": "6"
+        },
+        {
+          "text": "OIDC config stored in tenant namespace",
+          "mode": "lightup",
+          "target": "oidc-config",
+          "badge": "7"
+        },
+        {
+          "text": "API key policy stored in tenant namespace",
+          "mode": "lightup",
+          "target": "apikey-policy",
+          "badge": "8"
+        }
+      ]
+    },
+    "key-minting": {
+      "label": "2. API Key Minting (Tenant-Scoped)",
+      "steps": [
+        {
+          "text": "User authenticates with tenant-specific OIDC provider",
+          "mode": "arrow",
+          "from": "user",
+          "to": "oidc-provider",
+          "color": "#f0883e",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "OIDC provider returns tenant-scoped token",
+          "mode": "arrow",
+          "from": "oidc-provider",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 2,
+          "fromLeft": true,
+          "toRight": true
+        },
+        {
+          "text": "User sends POST /v1/api-keys with tenant token",
+          "mode": "arrow",
+          "from": "user",
+          "to": "maas-api",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "maas-api validates token against tenant OIDC config",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "oidc-config",
+          "color": "#f0883e",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 380, "y": 280 }
+          ]
+        },
+        {
+          "text": "maas-api stores API key with tenant identity in database",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "postgres",
+          "color": "#58a6ff",
+          "num": 5,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Database stores: key + subscription + tenant + groups",
+          "mode": "lightup",
+          "target": "postgres",
+          "badge": "6"
+        },
+        {
+          "text": "maas-api returns tenant-scoped API key",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 7,
+          "fromLeft": true,
+          "toRight": true
+        }
+      ]
+    },
+    "inference": {
+      "label": "3. Inference Request (Tenant Isolation)",
+      "steps": [
+        {
+          "text": "Client sends inference request with API key",
+          "mode": "arrow",
+          "from": "client",
+          "to": "gateway",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Gateway routes to Authorino for auth",
+          "mode": "arrow",
+          "from": "gateway",
+          "to": "authorino",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Authorino calls maas-api to validate key + tenant",
+          "mode": "arrow",
+          "from": "authorino",
+          "to": "maas-api",
+          "color": "#d2a8ff",
+          "num": 3,
+          "fromBottom": true,
+          "toTop": true,
+          "waypoints": [
+            { "x": 280, "y": 680 }
+          ]
+        },
+        {
+          "text": "maas-api queries database for key with tenant context",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "postgres",
+          "color": "#58a6ff",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "maas-api returns ValidationResult with tenant identity",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "authorino",
+          "color": "#3fb950",
+          "num": 5,
+          "fromTop": true,
+          "toBottom": true,
+          "waypoints": [
+            { "x": 320, "y": 680 }
+          ]
+        },
+        {
+          "text": "Authorino applies tenant-scoped AuthPolicy",
+          "mode": "arrow",
+          "from": "authorino",
+          "to": "authpolicy",
+          "color": "#3fb950",
+          "num": 6,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Request forwarded to HTTPRoute with tenant metadata",
+          "mode": "arrow",
+          "from": "authorino",
+          "to": "httproute",
+          "color": "#58a6ff",
+          "num": 7,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "TokenRateLimitPolicy applied with tenant discriminator",
+          "mode": "arrow",
+          "from": "httproute",
+          "to": "ratelimit",
+          "color": "#79c0ff",
+          "num": 8,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Request routed to model backend",
+          "mode": "arrow",
+          "from": "httproute",
+          "to": "model",
+          "color": "#58a6ff",
+          "num": 9,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Model processes inference request",
+          "mode": "lightup",
+          "target": "model",
+          "badge": "10"
+        },
+        {
+          "text": "Response returned through gateway to client",
+          "mode": "arrow",
+          "from": "gateway",
+          "to": "client",
+          "color": "#3fb950",
+          "num": 11,
+          "fromLeft": true,
+          "toRight": true
+        }
+      ]
+    },
+    "policy-reconcile": {
+      "label": "4. Policy Reconciliation",
+      "steps": [
+        {
+          "text": "maas-controller watches tenant namespace for MaaSAuthPolicy",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "authpolicy-cr",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 100, "y": 330 }
+          ]
+        },
+        {
+          "text": "maas-controller watches tenant namespace for MaaSSubscription",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "subscription",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 100, "y": 260 }
+          ]
+        },
+        {
+          "text": "Controller aggregates MaaSAuthPolicy → AuthPolicy on HTTPRoute",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "authpolicy",
+          "color": "#3fb950",
+          "num": 3,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 950, "y": 100 }
+          ]
+        },
+        {
+          "text": "Controller aggregates MaaSSubscription → TokenRateLimitPolicy",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "ratelimit",
+          "color": "#79c0ff",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 950, "y": 140 }
+          ]
+        },
+        {
+          "text": "AuthPolicy attached to HTTPRoute",
+          "mode": "arrow",
+          "from": "authpolicy",
+          "to": "httproute",
+          "color": "#3fb950",
+          "num": 5,
+          "fromLeft": true,
+          "toTop": true
+        },
+        {
+          "text": "TokenRateLimitPolicy attached to HTTPRoute",
+          "mode": "arrow",
+          "from": "ratelimit",
+          "to": "httproute",
+          "color": "#79c0ff",
+          "num": 6,
+          "fromLeft": true,
+          "toBottom": true
+        }
+      ]
+    }
+  },
+  "legend": [
+    { "label": "Control Plane", "color": "#58a6ff" },
+    { "label": "Tenant Resources", "color": "#d2a8ff" },
+    { "label": "Auth/Gateway", "color": "#f0883e" },
+    { "label": "Data Plane", "color": "#3fb950" },
+    { "label": "Rate Limiting", "color": "#79c0ff" }
+  ],
+  "flowOrder": ["create-tenant", "key-minting", "inference", "policy-reconcile"],
+  "defaultFlow": "create-tenant",
+  "inspector": {
+    "initialState": {
+      "phase": "request",
+      "headers": [
+        { "value": "POST /v1/api-keys", "style": "keep", "id": "h-path" },
+        { "value": "Authorization: Bearer <oidc-token>", "style": "keep", "id": "h-auth" }
+      ],
+      "body": [
+        { "value": "{", "style": "keep", "id": "b-open" },
+        { "value": "  \"subscription\": \"gpt-4-sub\",", "style": "keep", "id": "b-sub" },
+        { "value": "  \"groups\": [\"tenant-acme-users\"]", "style": "keep", "id": "b-groups" },
+        { "value": "}", "style": "keep", "id": "b-close" }
+      ],
+      "cycleState": []
+    },
+    "mutations": {
+      "key-minting": [
+        {
+          "step": 3,
+          "label": "User sends key minting request",
+          "phase": "request",
+          "actions": [
+            { "id": "h-path", "style": "highlight" },
+            { "id": "h-auth", "style": "highlight" }
+          ]
+        },
+        {
+          "step": 4,
+          "label": "maas-api validates OIDC token",
+          "phase": "request",
+          "cycleState": [
+            { "value": "Validating token against:", "style": "keep", "id": "c-header" },
+            { "value": "  issuer: acme-idp.example.com", "style": "add", "id": "c-issuer" },
+            { "value": "  tenant: tenant-acme-ns", "style": "add", "id": "c-tenant" }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "Storing key in database",
+          "phase": "request",
+          "cycleState": [
+            { "value": "INSERT INTO api_keys:", "style": "keep", "id": "c-sql" },
+            { "value": "  key: sk-abc123...", "style": "add", "id": "c-key" },
+            { "value": "  subscription: gpt-4-sub", "style": "add", "id": "c-sub-db" },
+            { "value": "  tenant: tenant-acme-ns", "style": "add", "id": "c-tenant-db" },
+            { "value": "  groups: [tenant-acme-users]", "style": "add", "id": "c-groups-db" }
+          ]
+        },
+        {
+          "step": 7,
+          "label": "API key returned",
+          "phase": "response",
+          "replaceHeaders": [
+            { "value": "HTTP/1.1 201 Created", "style": "keep", "id": "r-status" },
+            { "value": "Content-Type: application/json", "style": "keep", "id": "r-ct" }
+          ],
+          "replaceBody": [
+            { "value": "{", "style": "keep", "id": "r-open" },
+            { "value": "  \"key\": \"sk-abc123...\",", "style": "add", "id": "r-key" },
+            { "value": "  \"subscription\": \"gpt-4-sub\",", "style": "keep", "id": "r-sub" },
+            { "value": "  \"tenant\": \"tenant-acme-ns\",", "style": "add", "id": "r-tenant" },
+            { "value": "  \"groups\": [\"tenant-acme-users\"]", "style": "keep", "id": "r-groups" },
+            { "value": "}", "style": "keep", "id": "r-close" }
+          ],
+          "clearCycleState": true
+        }
+      ],
+      "inference": [
+        {
+          "step": 1,
+          "label": "Client sends inference request",
+          "phase": "request",
+          "replaceHeaders": [
+            { "value": "POST /v1/chat/completions", "style": "highlight", "id": "i-path" },
+            { "value": "Authorization: Bearer sk-abc123...", "style": "highlight", "id": "i-auth" },
+            { "value": "Content-Type: application/json", "style": "keep", "id": "i-ct" }
+          ],
+          "replaceBody": [
+            { "value": "{", "style": "keep", "id": "i-open" },
+            { "value": "  \"model\": \"gpt-4\",", "style": "keep", "id": "i-model" },
+            { "value": "  \"messages\": [...]", "style": "keep", "id": "i-messages" },
+            { "value": "}", "style": "keep", "id": "i-close" }
+          ],
+          "clearCycleState": true
+        },
+        {
+          "step": 3,
+          "label": "Authorino validates key",
+          "phase": "request",
+          "cycleState": [
+            { "value": "POST /internal/v1/api-keys/validate", "style": "keep", "id": "v-path" },
+            { "value": "{ \"key\": \"sk-abc123...\" }", "style": "keep", "id": "v-key" }
+          ]
+        },
+        {
+          "step": 5,
+          "label": "ValidationResult with tenant",
+          "phase": "request",
+          "cycleState": [
+            { "value": "ValidationResult:", "style": "keep", "id": "vr-header" },
+            { "value": "  valid: true", "style": "add", "id": "vr-valid" },
+            { "value": "  tenant: tenant-acme-ns", "style": "add", "id": "vr-tenant" },
+            { "value": "  subscription: gpt-4-sub", "style": "add", "id": "vr-sub" },
+            { "value": "  groups: [tenant-acme-users]", "style": "add", "id": "vr-groups" }
+          ]
+        },
+        {
+          "step": 6,
+          "label": "AuthPolicy applied",
+          "phase": "request",
+          "actions": [
+            { "action": "add", "target": "headers", "value": "X-MaaS-Tenant: tenant-acme-ns", "id": "h-tenant", "style": "add" },
+            { "action": "add", "target": "headers", "value": "X-MaaS-Subscription: gpt-4-sub", "id": "h-sub", "style": "add" }
+          ]
+        },
+        {
+          "step": 8,
+          "label": "Rate limit check (tenant-scoped)",
+          "phase": "request",
+          "cycleState": [
+            { "value": "Rate limit discriminators:", "style": "keep", "id": "rl-header" },
+            { "value": "  tenant: tenant-acme-ns", "style": "highlight", "id": "rl-tenant" },
+            { "value": "  subscription: gpt-4-sub", "style": "highlight", "id": "rl-sub" },
+            { "value": "  allowed: true", "style": "add", "id": "rl-allowed" }
+          ]
+        },
+        {
+          "step": 11,
+          "label": "Response returned",
+          "phase": "response",
+          "replaceHeaders": [
+            { "value": "HTTP/1.1 200 OK", "style": "keep", "id": "res-status" },
+            { "value": "Content-Type: application/json", "style": "keep", "id": "res-ct" }
+          ],
+          "replaceBody": [
+            { "value": "{", "style": "keep", "id": "res-open" },
+            { "value": "  \"choices\": [...],", "style": "keep", "id": "res-choices" },
+            { "value": "  \"usage\": {...}", "style": "keep", "id": "res-usage" },
+            { "value": "}", "style": "keep", "id": "res-close" }
+          ],
+          "clearCycleState": true
+        }
+      ]
+    }
+  }
+}

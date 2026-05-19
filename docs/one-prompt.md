@@ -8,19 +8,19 @@ Copy the prompt below and paste it into a **new Claude Code session**. Then prov
 
 ```
 Read the FlowStory framework guide from this URL:
-https://raw.githubusercontent.com/noyitz/flowstory/main/CLAUDE.md
+https://raw.githubusercontent.com/jland-redhat/flowstory/main/CLAUDE.md
 
 This is a framework for creating animated step-by-step architecture flow diagrams. Your task is to:
 
 1. Read the documentation links I provide below to understand the architecture
 2. Generate a SINGLE self-contained HTML file called `flow.html` that:
-   - Loads CSS from: https://noyitz.github.io/flowstory/templates/style.css
-   - Loads the FlowStory engine from: https://noyitz.github.io/flowstory/src/index.js
+   - Loads CSS from: https://jland-redhat.github.io/flowstory/templates/style.css
+   - Loads the FlowStory engine from: https://jland-redhat.github.io/flowstory/src/index.js
    - Embeds the diagram JSON inline (not as a separate file)
    - Auto-plays in loop mode on page load
    - Has all the UI: flow selector, play/pause, speed, loop, reset, theme toggle, steps panel, inspector panel
 
-Use the template structure from: https://raw.githubusercontent.com/noyitz/flowstory/main/examples/ai-gateway/index.html
+Use the template structure from: https://raw.githubusercontent.com/jland-redhat/flowstory/main/examples/ai-gateway/index.html
 But instead of loading diagram.json from a file, embed the JSON directly in the script.
 
 Here are the resources to learn from and the flow I want to visualize:

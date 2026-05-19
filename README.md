@@ -17,7 +17,7 @@ AI-agent-first animated flow diagram framework. Define architecture flows in JSO
 
 ## Live Example
 
-[AI Inference Gateway — Flow Visualizer](https://noyitz.github.io/ai-gateway-docs/ai-gateway-flow.html)
+[AI Inference Gateway — Flow Visualizer](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html)
 
 ## For AI Agents
 
@@ -32,7 +32,7 @@ See [docs/agent-prompt.md](docs/agent-prompt.md) for a copy-pasteable prompt for
 
 ## Gallery
 
-Browse community-created diagrams at [flowstory.dev/gallery](https://flowstory.dev/gallery).
+Browse examples on [GitHub Pages](https://jland-redhat.github.io/flowstory/).
 
 ## License
 

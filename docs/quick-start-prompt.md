@@ -11,13 +11,13 @@ Start a **new session**.
 ## Step 2: Paste This Prompt
 
 ```
-Read this guide: https://raw.githubusercontent.com/noyitz/flowstory/main/CLAUDE.md
+Read this guide: https://raw.githubusercontent.com/jland-redhat/flowstory/main/CLAUDE.md
 
-Then read this template: https://raw.githubusercontent.com/noyitz/flowstory/main/examples/ai-gateway/index.html
+Then read this template: https://raw.githubusercontent.com/jland-redhat/flowstory/main/examples/ai-gateway/index.html
 
 Generate a SINGLE self-contained HTML file at ./flow.html that:
-- Loads CSS from: https://noyitz.github.io/flowstory/templates/style.css
-- Loads FlowStory from: https://noyitz.github.io/flowstory/src/index.js
+- Loads CSS from: https://jland-redhat.github.io/flowstory/templates/style.css
+- Loads FlowStory from: https://jland-redhat.github.io/flowstory/src/index.js
 - Embeds the diagram JSON inline in the script (NOT as a separate file)
 - Auto-plays in loop mode on page load
 - Uses viz.load(diagram) to load the inline JSON object
@@ -76,10 +76,10 @@ The generated `flow.html` is fully self-contained. You can:
 
 ## Example Output
 
-See a live example: [AI Inference Gateway Flow Visualizer](https://noyitz.github.io/ai-gateway-docs/ai-gateway-flow.html)
+See a live example: [AI Inference Gateway Flow Visualizer](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html)
 
 ## Links
 
-- **Framework repo**: https://github.com/noyitz/flowstory
-- **Full schema docs**: https://github.com/noyitz/flowstory/blob/main/CLAUDE.md
-- **Agent prompt (for non-Claude tools)**: https://github.com/noyitz/flowstory/blob/main/docs/agent-prompt.md
+- **Framework repo**: https://github.com/jland-redhat/flowstory
+- **Full schema docs**: https://github.com/jland-redhat/flowstory/blob/main/CLAUDE.md
+- **Agent prompt (for non-Claude tools)**: https://github.com/jland-redhat/flowstory/blob/main/docs/agent-prompt.md

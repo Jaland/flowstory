@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowStory Diagrams</title>
+<style>
+:root {
+  --bg: #0a0a0f; --bg2: #161b22; --bg3: #21262d;
+  --text: #e2e8f0; --dim: #8b949e; --muted: #484f58;
+  --border: #21262d; --border2: #30363d;
+  --accent: #58a6ff; --accent2: #79c0ff;
+  --green: #3fb950; --orange: #f0883e; --red: #f85149; --purple: #d2a8ff;
+  --card-shadow: rgba(0,0,0,0.4); --hover-glow: rgba(88,166,255,0.15);
+}
+body.light {
+  --bg: #ffffff; --bg2: #f6f8fa; --bg3: #e1e4e8;
+  --text: #24292f; --dim: #656d76; --muted: #8b949e;
+  --border: #d0d7de; --border2: #d0d7de;
+  --accent: #0969da; --accent2: #0550ae;
+  --card-shadow: rgba(0,0,0,0.08); --hover-glow: rgba(9,105,218,0.1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  padding: 40px 24px;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--accent2); }
+
+.theme-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--bg2);
+  color: var(--text); cursor: pointer; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+
+.container { max-width: 1000px; margin: 0 auto; }
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.header .gradient {
+  background: linear-gradient(135deg, #58a6ff, #d2a8ff, #f0883e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header p {
+  color: var(--dim);
+  font-size: 16px;
+}
+
+.flows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.flow-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all .2s;
+  display: flex;
+  flex-direction: column;
+}
+.flow-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--hover-glow);
+}
+.flow-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.flow-card p {
+  color: var(--dim);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+.flow-card .actions {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .2s;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+body.light .btn-primary { color: #fff; }
+.btn-primary:hover {
+  filter: brightness(1.15);
+  color: #fff;
+}
+
+.back-link {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .flows-grid {
+    grid-template-columns: 1fr;
+  }
+  .header h1 {
+    font-size: 28px;
+  }
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="theme-toggle" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'☀':'☾'">&#9790;</button>
+
+<div class="container">
+  <div class="header">
+    <h1><span class="gradient">FlowStory</span> Diagrams</h1>
+    <p>Animated architecture flow diagrams</p>
+  </div>
+
+  <div class="flows-grid">
+    <a href="maas-key-minting.html" class="flow-card">
+      <h3>MaaS Key Minting Flow</h3>
+      <p>Demonstrates API key generation, hashing, and storage in the OpenDataHub Models-as-a-Service platform. Shows the flow from user request through Gateway API, AuthPolicy, and the MaaS API service to PostgreSQL.</p>
+      <div class="actions">
+        <span class="btn btn-primary">&#9654; View Flow</span>
+      </div>
+    </a>
+
+    <a href="maas-multi-tenancy.html" class="flow-card">
+      <h3>MaaS Multi-Tenancy Architecture</h3>
+      <p>Complete multi-tenant architecture flow showing request routing, auth enforcement, rate limiting, and model inference. Includes request/response paths, error handling, and policy enforcement.</p>
+      <div class="actions">
+        <span class="btn btn-primary">&#9654; View Flow</span>
+      </div>
+    </a>
+
+    <a href="maas-policy-creation.html" class="flow-card">
+      <h3>MaaS Policy Creation & Reconciliation</h3>
+      <p>Kubernetes-native policy creation and reconciliation flow. Shows how user-defined AuthPolicies and RateLimitPolicies are created, validated, and reconciled by the controller into Authorino and Limitador configurations.</p>
+      <div class="actions">
+        <span class="btn btn-primary">&#9654; View Flow</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="back-link">
+    <a href="../index.html" class="btn">← Back to FlowStory Home</a>
+  </div>
+</div>
+
+</body>
+</html>
