@@ -9,14 +9,14 @@
   },
   "canvas": {
     "width": 1400,
-    "height": 1100
+    "height": 870
   },
   "nodes": {
     "cluster": {
       "x": 80,
       "y": 10,
       "w": 1300,
-      "h": 1050,
+      "h": 810,
       "label": "OpenShift Cluster",
       "type": "boundary",
       "color": "#f0883e",
@@ -32,7 +32,7 @@
     },
     "model-deployer": {
       "x": -60,
-      "y": 750,
+      "y": 650,
       "w": 130,
       "h": 60,
       "label": "Model Deployer",
@@ -131,7 +131,7 @@
       "x": 110,
       "y": 560,
       "w": 920,
-      "h": 260,
+      "h": 220,
       "label": "ml-models",
       "sublabel": "**Model Namespace**",
       "type": "container",
@@ -149,7 +149,7 @@
     },
     "modelref": {
       "x": 140,
-      "y": 660,
+      "y": 685,
       "w": 380,
       "h": 50,
       "label": "MaaSModelRef",
@@ -157,22 +157,11 @@
       "color": "#58a6ff",
       "inner": true
     },
-    "httproute": {
-      "x": 140,
-      "y": 720,
-      "w": 380,
-      "h": 50,
-      "label": "HTTPRoute",
-      "sublabel": "/v1/chat/completions",
-      "color": "#79c0ff",
-      "fontSize": 14,
-      "inner": true
-    },
     "ratelimit": {
       "x": 560,
-      "y": 600,
+      "y": 640,
       "w": 430,
-      "h": 170,
+      "h": 100,
       "label": "TokenRateLimitPolicy",
       "sublabel": "Aggregated from MaaSSubscription",
       "color": "#d2a8ff",
@@ -247,7 +236,7 @@
       "details": [
         ["Namespace", "ml-models (model namespace)"],
         ["Points to", "LLMInferenceService or ExternalModel"],
-        ["Creates", "HTTPRoute for /v1/chat/completions"],
+        ["Exposes", "Model endpoint at /v1/chat/completions"],
         ["Created by", "Model Deployer"]
       ]
     },
@@ -267,7 +256,7 @@
       "details": [
         ["Namespace", "ml-models (same as model)"],
         ["Source", "MaaSSubscription in tenant-acme-ns"],
-        ["Attached to", "HTTPRoute (via targetRef)"],
+        ["Attached to", "Model endpoint (via targetRef)"],
         ["Created by", "maas-controller"]
       ]
     },
@@ -293,10 +282,10 @@
           "color": "#d2a8ff",
           "num": 1,
           "fromRight": true,
-          "toLeft": true,
+          "toBottom": true,
           "waypoints": [
-            { "x": 700, "y": 350 },
-            { "x": 700, "y": 277 }
+            { "x": 200, "y": 280 },
+            { "x": 890, "y": 280 }
           ]
         },
         {
@@ -343,20 +332,7 @@
           "color": "#58a6ff",
           "num": 5,
           "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 80, "y": 685 }
-          ]
-        },
-        {
-          "text": "MaaSModelRef controller creates HTTPRoute for the model",
-          "mode": "arrow",
-          "from": "modelref",
-          "to": "httproute",
-          "color": "#79c0ff",
-          "num": 6,
-          "fromBottom": true,
-          "toTop": true
+          "toLeft": true
         },
         {
           "text": "MaaS Admin creates MaaSSubscription and MaaSAuthPolicy in tenant namespace",
@@ -364,7 +340,7 @@
           "from": "maas-admin",
           "to": "subscription",
           "color": "#58a6ff",
-          "num": 7,
+          "num": 6,
           "fromRight": true,
           "toLeft": true,
           "waypoints": [
@@ -377,7 +353,7 @@
           "from": "maas-admin",
           "to": "authpolicy-cr",
           "color": "#3fb950",
-          "num": 8,
+          "num": 7,
           "fromRight": true,
           "toLeft": true,
           "waypoints": [
@@ -390,7 +366,7 @@
           "from": "maas-controller",
           "to": "tenant-ns",
           "color": "#58a6ff",
-          "num": 9,
+          "num": 8,
           "fromBottom": true,
           "toTop": true,
           "waypoints": [
@@ -404,12 +380,13 @@
           "from": "maas-controller",
           "to": "ratelimit",
           "color": "#d2a8ff",
-          "num": 10,
+          "num": 9,
           "fromBottom": true,
           "toTop": true,
           "waypoints": [
             { "x": 320, "y": 540 },
-            { "x": 775, "y": 540 }
+            { "x": 775, "y": 540 },
+            { "x": 775, "y": 640 }
           ]
         },
         {
@@ -418,7 +395,7 @@
           "from": "maas-controller",
           "to": "authpolicy",
           "color": "#d2a8ff",
-          "num": 11,
+          "num": 10,
           "fromTop": true,
           "toBottom": true,
           "waypoints": [
@@ -427,19 +404,9 @@
           ]
         },
         {
-          "text": "TokenRateLimitPolicy attached to HTTPRoute via targetRef",
-          "mode": "arrow",
-          "from": "ratelimit",
-          "to": "httproute",
-          "color": "#d2a8ff",
-          "num": 12,
-          "fromLeft": true,
-          "toRight": true
-        },
-        {
-          "text": "HTTPRoute now has tenant-scoped auth and rate limiting policies",
+          "text": "Policies are now active and enforcing tenant access controls",
           "mode": "lightup",
-          "target": "httproute",
+          "target": "ratelimit",
           "badge": "✓"
         }
       ]
@@ -450,8 +417,7 @@
     { "label": "Tenant Resources", "color": "#d2a8ff" },
     { "label": "Model Resources", "color": "#3fb950" },
     { "label": "Gateway/Ingress", "color": "#f0883e" },
-    { "label": "Kuadrant Objects", "color": "#d2a8ff" },
-    { "label": "HTTPRoute", "color": "#79c0ff" }
+    { "label": "Kuadrant Objects", "color": "#d2a8ff" }
   ],
   "defaultFlow": "main"
 }
