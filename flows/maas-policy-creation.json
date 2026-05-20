@@ -9,12 +9,22 @@
   },
   "canvas": {
     "width": 1400,
-    "height": 900
+    "height": 1100
   },
   "nodes": {
+    "cluster": {
+      "x": 80,
+      "y": 10,
+      "w": 1300,
+      "h": 1050,
+      "label": "OpenShift Cluster",
+      "type": "boundary",
+      "color": "#f0883e",
+      "labelAlign": "left"
+    },
     "maas-admin": {
       "x": -60,
-      "y": 100,
+      "y": 380,
       "w": 130,
       "h": 60,
       "label": "MaaS Admin",
@@ -22,75 +32,85 @@
     },
     "model-deployer": {
       "x": -60,
-      "y": 350,
+      "y": 750,
       "w": 130,
       "h": 60,
       "label": "Model Deployer",
       "type": "icon"
     },
+    "ingress-ns": {
+      "x": 110,
+      "y": 50,
+      "w": 920,
+      "h": 120,
+      "label": "openshift-ingress",
+      "sublabel": "Gateway Namespace",
+      "type": "container",
+      "color": "#f0883e"
+    },
+    "authpolicy": {
+      "x": 360,
+      "y": 85,
+      "w": 380,
+      "h": 65,
+      "label": "AuthPolicy",
+      "sublabel": "Aggregated from MaaSAuthPolicy",
+      "color": "#d2a8ff",
+      "inner": true
+    },
     "rhai-ns": {
-      "x": 130,
-      "y": 40,
-      "w": 360,
-      "h": 200,
+      "x": 110,
+      "y": 210,
+      "w": 600,
+      "h": 120,
       "label": "redhat-ai-applications",
       "sublabel": "Control Plane Namespace",
       "type": "container",
       "color": "#8b949e"
     },
     "maas-controller": {
-      "x": 150,
-      "y": 80,
-      "w": 160,
+      "x": 140,
+      "y": 245,
+      "w": 200,
       "h": 65,
       "label": "maas-controller",
       "sublabel": "Reconciler",
       "color": "#58a6ff",
       "inner": true
     },
-    "aigateway-controller": {
-      "x": 320,
-      "y": 80,
-      "w": 160,
-      "h": 65,
-      "label": "AIGateway",
-      "sublabel": "Controller",
-      "color": "#d2a8ff",
-      "inner": true
-    },
     "maas-ns": {
-      "x": 130,
-      "y": 155,
-      "w": 180,
-      "h": 75,
+      "x": 750,
+      "y": 210,
+      "w": 280,
+      "h": 120,
       "label": "models-as-a-service",
       "type": "container",
       "color": "#79c0ff"
     },
     "aigateway-cr": {
-      "x": 145,
-      "y": 180,
-      "w": 150,
-      "h": 40,
+      "x": 770,
+      "y": 245,
+      "w": 240,
+      "h": 65,
       "label": "AIGateway",
       "sublabel": "tenant-acme",
       "color": "#d2a8ff",
       "inner": true
     },
     "tenant-ns": {
-      "x": 550,
-      "y": 40,
-      "w": 300,
-      "h": 200,
+      "x": 110,
+      "y": 370,
+      "w": 920,
+      "h": 150,
       "label": "tenant-acme-ns",
-      "sublabel": "Tenant Admin Namespace",
+      "sublabel": "**Tenant Namespace**",
       "type": "container",
       "color": "#d2a8ff"
     },
     "subscription": {
-      "x": 570,
-      "y": 80,
-      "w": 130,
+      "x": 360,
+      "y": 405,
+      "w": 380,
       "h": 50,
       "label": "MaaSSubscription",
       "sublabel": "gpt-4-sub",
@@ -98,49 +118,29 @@
       "inner": true
     },
     "authpolicy-cr": {
-      "x": 710,
-      "y": 80,
-      "w": 130,
+      "x": 360,
+      "y": 465,
+      "w": 380,
       "h": 50,
       "label": "MaaSAuthPolicy",
       "sublabel": "acme-policy",
       "color": "#3fb950",
       "inner": true
     },
-    "config-data": {
-      "x": 570,
-      "y": 145,
-      "w": 130,
-      "h": 50,
-      "label": "OIDC Config",
-      "sublabel": "acme-idp.com",
-      "color": "#f0883e",
-      "inner": true
-    },
-    "key-policy": {
-      "x": 710,
-      "y": 145,
-      "w": 130,
-      "h": 50,
-      "label": "API Key Policy",
-      "sublabel": "max expiry",
-      "color": "#79c0ff",
-      "inner": true
-    },
     "model-ns": {
-      "x": 920,
-      "y": 40,
-      "w": 220,
-      "h": 200,
+      "x": 110,
+      "y": 560,
+      "w": 920,
+      "h": 260,
       "label": "ml-models",
-      "sublabel": "Model Deployer Namespace",
+      "sublabel": "**Model Namespace**",
       "type": "container",
       "color": "#8b949e"
     },
     "model": {
-      "x": 940,
-      "y": 80,
-      "w": 180,
+      "x": 140,
+      "y": 600,
+      "w": 380,
       "h": 50,
       "label": "LLMInferenceService",
       "sublabel": "gpt-4-model",
@@ -148,9 +148,9 @@
       "inner": true
     },
     "modelref": {
-      "x": 940,
-      "y": 145,
-      "w": 180,
+      "x": 140,
+      "y": 660,
+      "w": 380,
       "h": 50,
       "label": "MaaSModelRef",
       "sublabel": "gpt-4-ref",
@@ -158,75 +158,46 @@
       "inner": true
     },
     "httproute": {
-      "x": 1200,
-      "y": 80,
-      "w": 200,
-      "h": 60,
+      "x": 140,
+      "y": 720,
+      "w": 380,
+      "h": 50,
       "label": "HTTPRoute",
       "sublabel": "/v1/chat/completions",
-      "color": "#79c0ff"
-    },
-    "gateway-policies": {
-      "x": 550,
-      "y": 320,
-      "w": 590,
-      "h": 180,
-      "label": "Gateway Policies",
-      "sublabel": "Kuadrant Resources",
-      "type": "container",
-      "color": "#f0883e"
-    },
-    "authpolicy": {
-      "x": 570,
-      "y": 360,
-      "w": 270,
-      "h": 60,
-      "label": "AuthPolicy",
-      "sublabel": "Aggregated from MaaSAuthPolicy",
-      "color": "#3fb950",
+      "color": "#79c0ff",
+      "fontSize": 14,
       "inner": true
     },
     "ratelimit": {
-      "x": 860,
-      "y": 360,
-      "w": 270,
-      "h": 60,
+      "x": 560,
+      "y": 600,
+      "w": 430,
+      "h": 170,
       "label": "TokenRateLimitPolicy",
       "sublabel": "Aggregated from MaaSSubscription",
-      "color": "#79c0ff",
-      "inner": true
-    },
-    "authpolicy-ref": {
-      "x": 570,
-      "y": 435,
-      "w": 270,
-      "h": 50,
-      "label": "→ HTTPRoute ref",
-      "sublabel": "Attached to route",
-      "color": "#8b949e",
-      "fontSize": 13,
-      "inner": true
-    },
-    "ratelimit-ref": {
-      "x": 860,
-      "y": 435,
-      "w": 270,
-      "h": 50,
-      "label": "→ HTTPRoute ref",
-      "sublabel": "Attached to route",
-      "color": "#8b949e",
-      "fontSize": 13,
+      "color": "#d2a8ff",
+      "fontSize": 14,
       "inner": true
     }
   },
   "tooltips": {
+    "cluster": {
+      "title": "OpenShift Cluster",
+      "description": "All MaaS multi-tenancy resources run within a single OpenShift cluster. Isolation is logical (namespace-based), not physical.",
+      "details": [
+        ["Isolation", "Namespace-based, label-driven"],
+        ["Control Plane", "Shared maas-controller instance"],
+        ["Tenants", "Multiple tenant namespaces per cluster"],
+        ["Gateway", "Shared openshift-ingress"]
+      ]
+    },
     "aigateway-cr": {
       "title": "AIGateway Custom Resource",
-      "description": "New CR that replaces the Tenant CR. Lives in models-as-a-service namespace. Creating it triggers the AIGateway controller to provision a full tenant environment.",
+      "description": "New CR that replaces the Tenant CR. Lives in models-as-a-service namespace. Creating it triggers the maas-controller to provision a full tenant environment.",
       "details": [
         ["Namespace", "models-as-a-service"],
         ["Creates", "Tenant namespace with label"],
-        ["Contains", "OIDC config, API key policy, telemetry settings"],
+        ["Contains", "Tenant config metadata"],
         ["Owned by", "MaaS Admin"]
       ]
     },
@@ -235,8 +206,8 @@
       "description": "Automatically created namespace for each tenant. Contains all tenant-scoped MaaS resources including subscriptions and auth policies.",
       "details": [
         ["Label", "maas.opendatahub.io/tenant: acme"],
-        ["Contains", "MaaSSubscription, MaaSAuthPolicy, OIDC config"],
-        ["Created by", "AIGateway controller"],
+        ["Contains", "MaaSSubscription, MaaSAuthPolicy"],
+        ["Created by", "maas-controller (AIGateway reconciler)"],
         ["Watched by", "maas-controller"]
       ]
     },
@@ -247,7 +218,7 @@
         ["Namespace", "tenant-acme-ns"],
         ["Defines", "Token rate limits, model quotas"],
         ["Created by", "MaaS Admin"],
-        ["Reconciled to", "TokenRateLimitPolicy"]
+        ["Reconciled to", "TokenRateLimitPolicy in model namespace"]
       ]
     },
     "authpolicy-cr": {
@@ -257,17 +228,17 @@
         ["Namespace", "tenant-acme-ns"],
         ["Defines", "Groups, users, OIDC claims"],
         ["Created by", "MaaS Admin"],
-        ["Reconciled to", "AuthPolicy"]
+        ["Reconciled to", "AuthPolicy in openshift-ingress"]
       ]
     },
     "maas-controller": {
       "title": "MaaS Controller",
-      "description": "Watches tenant namespaces and reconciles MaaS CRs into Kuadrant policies. Single instance serves all tenants.",
+      "description": "Watches tenant namespaces and reconciles MaaS CRs into Kuadrant policies. Also handles AIGateway CR reconciliation. Single instance serves all tenants.",
       "details": [
         ["Namespace", "redhat-ai-applications"],
-        ["Watches", "All labeled tenant namespaces"],
-        ["Creates", "AuthPolicy, TokenRateLimitPolicy"],
-        ["Aggregates", "Multiple CRs per HTTPRoute"]
+        ["Watches", "AIGateway CRs, labeled tenant namespaces"],
+        ["Creates", "Tenant namespaces, AuthPolicy, TokenRateLimitPolicy"],
+        ["Aggregates", "Multiple tenant CRs per model"]
       ]
     },
     "modelref": {
@@ -282,22 +253,31 @@
     },
     "authpolicy": {
       "title": "AuthPolicy (Kuadrant)",
-      "description": "Kuadrant AuthPolicy attached to HTTPRoute. Aggregated from all MaaSAuthPolicy CRs that reference this model.",
+      "description": "Kuadrant AuthPolicy in openshift-ingress namespace. Aggregated from all MaaSAuthPolicy CRs that reference this model.",
       "details": [
+        ["Namespace", "openshift-ingress"],
         ["Source", "MaaSAuthPolicy in tenant-acme-ns"],
-        ["Attached to", "HTTPRoute (via MaaSModelRef)"],
-        ["Enforces", "Tenant identity, groups, OIDC validation"],
+        ["Attached to", "Gateway (via targetRef)"],
         ["Created by", "maas-controller"]
       ]
     },
     "ratelimit": {
       "title": "TokenRateLimitPolicy (Kuadrant)",
-      "description": "Kuadrant rate limiting policy. Aggregated from all MaaSSubscription CRs that reference this model.",
+      "description": "Kuadrant rate limiting policy in the model namespace. Aggregated from all MaaSSubscription CRs that reference this model.",
       "details": [
+        ["Namespace", "ml-models (same as model)"],
         ["Source", "MaaSSubscription in tenant-acme-ns"],
-        ["Attached to", "HTTPRoute (via MaaSModelRef)"],
-        ["Discriminator", "X-MaaS-Tenant, X-MaaS-Subscription"],
+        ["Attached to", "HTTPRoute (via targetRef)"],
         ["Created by", "maas-controller"]
+      ]
+    },
+    "ingress-ns": {
+      "title": "openshift-ingress Namespace",
+      "description": "OpenShift's default ingress namespace where Gateway API resources and AuthPolicy live.",
+      "details": [
+        ["Purpose", "Gateway and auth policy resources"],
+        ["Contains", "Gateway API, AuthPolicy (Kuadrant)"],
+        ["Managed by", "OpenShift Ingress Operator + maas-controller"]
       ]
     }
   },
@@ -313,39 +293,37 @@
           "color": "#d2a8ff",
           "num": 1,
           "fromRight": true,
-          "toLeft": true
+          "toLeft": true,
+          "waypoints": [
+            { "x": 700, "y": 350 },
+            { "x": 700, "y": 277 }
+          ]
         },
         {
-          "text": "AIGateway controller watches AIGateway CR",
+          "text": "maas-controller watches AIGateway CR",
           "mode": "arrow",
-          "from": "aigateway-controller",
+          "from": "maas-controller",
           "to": "aigateway-cr",
           "color": "#d2a8ff",
           "num": 2,
-          "fromBottom": true,
-          "toTop": true
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 650, "y": 277 }
+          ]
         },
         {
-          "text": "Controller creates tenant namespace with label",
+          "text": "maas-controller creates tenant namespace with label",
           "mode": "arrow",
-          "from": "aigateway-controller",
+          "from": "maas-controller",
           "to": "tenant-ns",
           "color": "#d2a8ff",
           "num": 3,
-          "fromRight": true,
-          "toLeft": true
-        },
-        {
-          "text": "Tenant namespace initialized with config resources",
-          "mode": "lightup",
-          "target": "config-data",
-          "badge": "4"
-        },
-        {
-          "text": "API key policy initialized",
-          "mode": "lightup",
-          "target": "key-policy",
-          "badge": "5"
+          "fromBottom": true,
+          "toTop": true,
+          "waypoints": [
+            { "x": 240, "y": 350 }
+          ]
         },
         {
           "text": "Model Deployer creates LLMInferenceService in their namespace",
@@ -353,7 +331,7 @@
           "from": "model-deployer",
           "to": "model",
           "color": "#3fb950",
-          "num": 6,
+          "num": 4,
           "fromRight": true,
           "toLeft": true
         },
@@ -363,9 +341,12 @@
           "from": "model-deployer",
           "to": "modelref",
           "color": "#58a6ff",
-          "num": 7,
+          "num": 5,
           "fromRight": true,
-          "toLeft": true
+          "toLeft": true,
+          "waypoints": [
+            { "x": 80, "y": 685 }
+          ]
         },
         {
           "text": "MaaSModelRef controller creates HTTPRoute for the model",
@@ -373,119 +354,87 @@
           "from": "modelref",
           "to": "httproute",
           "color": "#79c0ff",
+          "num": 6,
+          "fromBottom": true,
+          "toTop": true
+        },
+        {
+          "text": "MaaS Admin creates MaaSSubscription and MaaSAuthPolicy in tenant namespace",
+          "mode": "arrow",
+          "from": "maas-admin",
+          "to": "subscription",
+          "color": "#58a6ff",
+          "num": 7,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 280, "y": 410 }
+          ]
+        },
+        {
+          "text": "MaaS Admin also creates MaaSAuthPolicy",
+          "mode": "arrow",
+          "from": "maas-admin",
+          "to": "authpolicy-cr",
+          "color": "#3fb950",
           "num": 8,
           "fromRight": true,
-          "toLeft": true
+          "toLeft": true,
+          "waypoints": [
+            { "x": 280, "y": 490 }
+          ]
         },
         {
-          "text": "MaaS Admin creates MaaSSubscription in tenant namespace",
+          "text": "maas-controller watches tenant namespace for both MaaSSubscription and MaaSAuthPolicy",
           "mode": "arrow",
-          "from": "maas-admin",
-          "to": "subscription",
+          "from": "maas-controller",
+          "to": "tenant-ns",
           "color": "#58a6ff",
           "num": 9,
-          "fromRight": true,
-          "toLeft": true,
+          "fromBottom": true,
+          "toTop": true,
           "waypoints": [
-            { "x": 500, "y": 105 }
+            { "x": 240, "y": 350 },
+            { "x": 550, "y": 350 }
           ]
         },
         {
-          "text": "MaaS Admin creates MaaSAuthPolicy in tenant namespace",
-          "mode": "arrow",
-          "from": "maas-admin",
-          "to": "authpolicy-cr",
-          "color": "#3fb950",
-          "num": 10,
-          "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 500, "y": 105 }
-          ]
-        },
-        {
-          "text": "maas-controller watches tenant namespace for MaaSSubscription",
-          "mode": "arrow",
-          "from": "maas-controller",
-          "to": "subscription",
-          "color": "#58a6ff",
-          "num": 11,
-          "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 350, "y": 20 },
-            { "x": 640, "y": 20 }
-          ]
-        },
-        {
-          "text": "maas-controller watches tenant namespace for MaaSAuthPolicy",
-          "mode": "arrow",
-          "from": "maas-controller",
-          "to": "authpolicy-cr",
-          "color": "#3fb950",
-          "num": 12,
-          "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 380, "y": 15 },
-            { "x": 775, "y": 15 }
-          ]
-        },
-        {
-          "text": "maas-controller creates TokenRateLimitPolicy from MaaSSubscription",
+          "text": "maas-controller creates TokenRateLimitPolicy in model namespace",
           "mode": "arrow",
           "from": "maas-controller",
           "to": "ratelimit",
-          "color": "#79c0ff",
-          "num": 13,
+          "color": "#d2a8ff",
+          "num": 10,
           "fromBottom": true,
           "toTop": true,
           "waypoints": [
-            { "x": 230, "y": 280 },
-            { "x": 995, "y": 280 }
+            { "x": 320, "y": 540 },
+            { "x": 775, "y": 540 }
           ]
         },
         {
-          "text": "maas-controller creates AuthPolicy from MaaSAuthPolicy",
+          "text": "maas-controller creates AuthPolicy in openshift-ingress namespace",
           "mode": "arrow",
           "from": "maas-controller",
           "to": "authpolicy",
-          "color": "#3fb950",
-          "num": 14,
-          "fromBottom": true,
-          "toTop": true,
+          "color": "#d2a8ff",
+          "num": 11,
+          "fromTop": true,
+          "toBottom": true,
           "waypoints": [
-            { "x": 200, "y": 290 },
-            { "x": 705, "y": 290 }
+            { "x": 240, "y": 190 },
+            { "x": 550, "y": 190 }
           ]
         },
         {
-          "text": "TokenRateLimitPolicy references MaaSModelRef's HTTPRoute",
+          "text": "TokenRateLimitPolicy attached to HTTPRoute via targetRef",
           "mode": "arrow",
           "from": "ratelimit",
           "to": "httproute",
-          "color": "#79c0ff",
-          "num": 15,
-          "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 1170, "y": 390 },
-            { "x": 1170, "y": 110 }
-          ]
-        },
-        {
-          "text": "AuthPolicy references MaaSModelRef's HTTPRoute",
-          "mode": "arrow",
-          "from": "authpolicy",
-          "to": "httproute",
-          "color": "#3fb950",
-          "num": 16,
-          "fromRight": true,
-          "toLeft": true,
-          "waypoints": [
-            { "x": 1160, "y": 390 },
-            { "x": 1160, "y": 110 }
-          ]
+          "color": "#d2a8ff",
+          "num": 12,
+          "fromLeft": true,
+          "toRight": true
         },
         {
           "text": "HTTPRoute now has tenant-scoped auth and rate limiting policies",
@@ -500,8 +449,9 @@
     { "label": "MaaS Control Plane", "color": "#58a6ff" },
     { "label": "Tenant Resources", "color": "#d2a8ff" },
     { "label": "Model Resources", "color": "#3fb950" },
-    { "label": "Gateway Policies", "color": "#f0883e" },
-    { "label": "Configuration", "color": "#79c0ff" }
+    { "label": "Gateway/Ingress", "color": "#f0883e" },
+    { "label": "Kuadrant Objects", "color": "#d2a8ff" },
+    { "label": "HTTPRoute", "color": "#79c0ff" }
   ],
   "defaultFlow": "main"
 }

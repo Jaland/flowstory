@@ -266,6 +266,22 @@ Rendering order (back to front): boundaries, containers, sections, sub-boundarie
 { "from": "a", "to": "b", "waypoints": [{ "x": 500, "y": 100 }, { "x": 500, "y": 400 }] }
 ```
 
+**OpenShift cluster boundary**: When the user specifies "OpenShift" in the diagram context, wrap all internal resources in an orange `#f0883e` boundary node labeled "OpenShift Cluster". External actors (users, admins, clients) stay outside the boundary at negative x values. The boundary should encompass all namespaces and internal components with 30-50px padding.
+```json
+{
+  "cluster": {
+    "x": 80,
+    "y": 10,
+    "w": 1320,
+    "h": 550,
+    "label": "OpenShift Cluster",
+    "type": "boundary",
+    "color": "#f0883e",
+    "labelAlign": "left"
+  }
+}
+```
+
 ## Layout Tips
 
 - For a simple left-to-right flow with 5 nodes, space them at x = 0, 250, 500, 750, 1000 with y centered around 400-500
