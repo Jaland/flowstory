@@ -284,8 +284,8 @@
           "fromRight": true,
           "toBottom": true,
           "waypoints": [
-            { "x": 200, "y": 280 },
-            { "x": 890, "y": 280 }
+            { "x": 200, "y": 350 },
+            { "x": 890, "y": 350 }
           ]
         },
         {
@@ -309,10 +309,7 @@
           "color": "#d2a8ff",
           "num": 3,
           "fromBottom": true,
-          "toTop": true,
-          "waypoints": [
-            { "x": 240, "y": 350 }
-          ]
+          "toTop": true
         },
         {
           "text": "Model Deployer creates LLMInferenceService in their namespace",
@@ -370,8 +367,8 @@
           "fromBottom": true,
           "toTop": true,
           "waypoints": [
-            { "x": 240, "y": 350 },
-            { "x": 550, "y": 350 }
+            { "x": 240, "y": 340 },
+            { "x": 570, "y": 340 }
           ]
         },
         {
