@@ -60,7 +60,7 @@ See [docs/agent-prompt.md](docs/agent-prompt.md) for a copy-pasteable prompt for
 
 ## Gallery
 
-Browse examples on [GitHub Pages](https://jland-redhat.github.io/flowstory/).
+Browse examples on [GitHub Pages](https://Jaland.github.io/flowstory/).
 
 ## License
 
