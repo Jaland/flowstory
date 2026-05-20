@@ -15,9 +15,37 @@ AI-agent-first animated flow diagram framework. Define architecture flows in JSO
 
 **[Quick Start Guide](docs/quick-start-prompt.md)** — step-by-step instructions with the prompt to copy-paste.
 
-## Live Example
+## Live Examples
 
-[AI Inference Gateway — Flow Visualizer](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html)
+**MaaS Flow Diagrams:**
+- [MaaS Inference Flow](https://jland-redhat.github.io/flowstory/flows/maas-inference.html) — Auth, rate limiting, and model serving
+- [MaaS Key Minting](https://jland-redhat.github.io/flowstory/flows/maas-key-minting.html) — API key generation and storage
+- [MaaS Multi-Tenancy](https://jland-redhat.github.io/flowstory/flows/maas-multi-tenancy.html) — Complete multi-tenant architecture
+- [MaaS Policy Creation](https://jland-redhat.github.io/flowstory/flows/maas-policy-creation.html) — Kubernetes policy reconciliation
+
+**Other Examples:**
+- [AI Inference Gateway](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html) — Red Hat AI Gateway architecture
+
+## Viewing Diagrams Locally
+
+HTML files use ES6 modules and require a local server (browsers block `file://` URLs):
+
+```bash
+# Clean start (kills any old server first)
+npm run start
+
+# Or manually
+npm run dev        # Start server on port 9000
+npm run stop       # Stop server
+
+# Then open in browser
+http://localhost:9000/flows/maas-inference.html
+```
+
+**One-liner alternative** (no npm needed):
+```bash
+python3 -m http.server 9000
+```
 
 ## For AI Agents
 

@@ -10,6 +10,9 @@
   },
   "scripts": {
     "dev": "python3 -m http.server 9000",
+    "stop": "lsof -ti:9000 | xargs kill -9 2>/dev/null || true",
+    "start": "npm run stop && npm run dev",
+    "serve": "npm run start",
     "build": "esbuild src/index.js --bundle --format=esm --minify --outfile=dist/flowstory.min.js",
     "validate": "node bin/cli.js validate",
     "prompt": "node bin/cli.js prompt",
