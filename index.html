@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Architecture Flows — jland-redhat</title>
+<title>Architecture Flows — Jaland</title>
 <style>
 :root {
   --bg: #0a0a0f; --bg2: #161b22; --bg3: #21262d;
@@ -25,163 +25,167 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.65;
   min-height: 100vh;
   transition: background .3s, color .3s;
   overflow-x: hidden;
 }
 body::before {
   content: '';
-  position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-  width: 900px; height: 500px;
-  background: radial-gradient(ellipse, #58a6ff0a 0%, #d2a8ff06 40%, transparent 70%);
+  position: fixed; top: -160px; left: 50%; transform: translateX(-50%);
+  width: 1100px; height: 600px;
+  background: radial-gradient(ellipse, #58a6ff0c 0%, #d2a8ff08 40%, transparent 70%);
   pointer-events: none; z-index: 0;
 }
 a { color: var(--accent); text-decoration: none; transition: color .2s; }
 a:hover { color: var(--accent2); }
 
 .theme-toggle {
-  position: fixed; top: 16px; right: 16px; z-index: 100;
-  width: 40px; height: 40px; border-radius: 10px;
+  position: fixed; top: 20px; right: 20px; z-index: 100;
+  width: 48px; height: 48px; border-radius: 12px;
   border: 1px solid var(--border2); background: var(--bg2);
-  color: var(--text); cursor: pointer; font-size: 20px;
+  color: var(--text); cursor: pointer; font-size: 22px;
   display: flex; align-items: center; justify-content: center;
-  transition: border-color .2s;
 }
 .theme-toggle:hover { border-color: var(--accent); }
 
-.container { max-width: 980px; margin: 0 auto; padding: 56px 24px 48px; position: relative; z-index: 1; }
+.container { max-width: 1120px; margin: 0 auto; padding: 72px 32px 64px; position: relative; z-index: 1; }
 
 /* Header */
-.header { margin-bottom: 36px; }
-.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.header { margin-bottom: 52px; }
+.header-top { margin-bottom: 24px; }
 .badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 14px; border: 1px solid var(--border2); border-radius: 20px;
-  font-size: 12px; font-weight: 500; color: var(--dim); background: var(--bg2);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border: 1px solid var(--border2); border-radius: 24px;
+  font-size: 14px; font-weight: 500; color: var(--dim); background: var(--bg2);
 }
-.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px #3fb95066; }
+.badge-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px #3fb95066; }
 .header h1 {
-  font-size: clamp(32px, 5vw, 44px);
-  font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; line-height: 1.15;
+  font-size: clamp(40px, 6vw, 56px);
+  font-weight: 800; letter-spacing: -1.5px; margin-bottom: 20px; line-height: 1.1;
 }
 .header h1 .accent {
   background: linear-gradient(135deg, #58a6ff, #d2a8ff, #f0883e);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.header-lead { color: var(--dim); font-size: 17px; max-width: 620px; line-height: 1.7; margin-bottom: 24px; }
+.header-lead { color: var(--dim); font-size: 20px; max-width: 720px; line-height: 1.75; }
 
-/* About blurb */
+/* About */
 .about {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-  margin-bottom: 44px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+  margin-bottom: 64px;
 }
 .about-item {
   background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 12px; padding: 18px 20px;
+  border-radius: 16px; padding: 28px 28px 32px;
 }
-.about-icon { font-size: 22px; margin-bottom: 10px; line-height: 1; }
-.about-item h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-.about-item p { font-size: 13px; color: var(--dim); line-height: 1.55; }
+.about-icon { font-size: 32px; margin-bottom: 16px; line-height: 1; }
+.about-item h3 { font-size: 18px; font-weight: 650; margin-bottom: 8px; }
+.about-item p { font-size: 16px; color: var(--dim); line-height: 1.65; }
 
+.section-head { margin-bottom: 28px; }
 .section-label {
-  font-size: 12px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px;
+  font-size: 14px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 2px; color: var(--muted); margin-bottom: 8px;
 }
-.section-desc {
-  font-size: 14px; color: var(--dim); margin-bottom: 18px; max-width: 640px;
-}
+.section-desc { font-size: 18px; color: var(--dim); max-width: 720px; line-height: 1.65; }
 
-/* Flow cards */
+/* Flow cards — 2 columns so cards stay wide */
 .flows-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 72px;
 }
 .flow-card {
   display: flex; flex-direction: column;
   background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 14px; padding: 22px 24px;
+  border-radius: 18px; padding: 32px 36px 36px;
   color: var(--text); text-decoration: none;
   transition: all .25s;
-  position: relative; overflow: hidden;
+  position: relative; overflow: hidden; min-height: 220px;
 }
 .flow-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
   background: linear-gradient(90deg, var(--card-accent, var(--accent)), transparent);
-  opacity: .7;
 }
 .flow-card.gateway { --card-accent: var(--orange); }
 .flow-card.maas { --card-accent: var(--purple); }
 .flow-card:hover {
   border-color: var(--card-accent, var(--accent));
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px var(--hover-glow);
+  color: var(--text);
+}
+.flow-card-tag {
+  display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; margin-bottom: 14px;
+  padding: 6px 12px; border-radius: 6px;
+}
+.flow-card-tag.gateway { color: var(--orange); background: #f0883e18; border: 1px solid #f0883e33; }
+.flow-card-tag.maas { color: var(--purple); background: #d2a8ff18; border: 1px solid #d2a8ff33; }
+.flow-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.3px; }
+.flow-card p { font-size: 16px; color: var(--dim); line-height: 1.65; flex: 1; }
+.flow-card-arrow {
+  margin-top: 24px; font-size: 16px; font-weight: 600; color: var(--card-accent, var(--accent));
+  display: flex; align-items: center; gap: 8px;
+}
+.flow-card:hover .flow-card-arrow { gap: 14px; transition: gap .2s; }
+
+/* More section */
+.more-section { margin-bottom: 64px; }
+.more-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.more-card {
+  display: flex; flex-direction: column; gap: 20px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 18px; padding: 32px 28px 36px;
+  color: var(--text); text-decoration: none;
+  transition: all .25s; min-height: 240px;
+}
+.more-card:hover {
+  border-color: var(--accent);
   transform: translateY(-3px);
   box-shadow: 0 12px 32px var(--hover-glow);
   color: var(--text);
 }
-.flow-card-tag {
-  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.6px; margin-bottom: 10px;
-  padding: 3px 8px; border-radius: 4px;
-}
-.flow-card-tag.gateway { color: var(--orange); background: #f0883e18; border: 1px solid #f0883e33; }
-.flow-card-tag.maas { color: var(--purple); background: #d2a8ff18; border: 1px solid #d2a8ff33; }
-.flow-card h2 { font-size: 17px; font-weight: 650; margin-bottom: 8px; letter-spacing: -0.2px; }
-.flow-card p { font-size: 13px; color: var(--dim); line-height: 1.55; flex: 1; }
-.flow-card-arrow {
-  margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--card-accent, var(--accent));
-  display: flex; align-items: center; gap: 6px;
-}
-.flow-card:hover .flow-card-arrow { gap: 10px; transition: gap .2s; }
-
-/* More section */
-.more-section { margin-bottom: 48px; }
-.more-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
-}
-.more-card {
-  display: flex; gap: 16px; align-items: flex-start;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 14px; padding: 20px 22px;
-  color: var(--text); text-decoration: none;
-  transition: all .25s;
-}
-.more-card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--hover-glow);
-  color: var(--text);
-}
 .more-icon {
-  flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+  width: 56px; height: 56px; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; background: var(--bg3); border: 1px solid var(--border2);
+  font-size: 28px; background: var(--bg3); border: 1px solid var(--border2);
 }
 .more-card:hover .more-icon { border-color: var(--accent); background: #58a6ff11; }
-.more-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-.more-body p { font-size: 13px; color: var(--dim); line-height: 1.5; }
+.more-body { flex: 1; display: flex; flex-direction: column; }
+.more-body h3 { font-size: 20px; font-weight: 650; margin-bottom: 10px; }
+.more-body p { font-size: 16px; color: var(--dim); line-height: 1.65; flex: 1; }
 .more-body .link-hint {
-  display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 600;
+  display: inline-block; margin-top: 16px; font-size: 15px; font-weight: 600;
   color: var(--accent);
 }
 
 footer {
-  padding-top: 32px; border-top: 1px solid var(--border);
-  font-size: 13px; color: var(--muted); line-height: 1.7;
+  padding-top: 40px; border-top: 1px solid var(--border);
+  font-size: 15px; color: var(--muted); line-height: 1.75;
 }
-footer p + p { margin-top: 4px; }
+footer p + p { margin-top: 6px; }
 
-@media (max-width: 720px) {
+@media (max-width: 900px) {
+  .flows-grid { grid-template-columns: 1fr; }
+  .more-grid { grid-template-columns: 1fr; }
   .about { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .container { padding: 40px 16px 32px; }
-  .flows-grid, .more-grid { grid-template-columns: 1fr; }
-  .header-lead { font-size: 15px; }
+  body { font-size: 16px; }
+  .container { padding: 48px 20px 40px; }
+  .header h1 { font-size: 36px; }
+  .header-lead { font-size: 17px; }
+  .flow-card { padding: 24px 26px 28px; }
+  .flow-card h2 { font-size: 21px; }
 }
 </style>
 </head>
@@ -192,11 +196,11 @@ footer p + p { margin-top: 4px; }
 <div class="container">
   <header class="header">
     <div class="header-top">
-      <span class="badge"><span class="badge-dot"></span> jland-redhat</span>
+      <span class="badge"><span class="badge-dot"></span> Jaland</span>
     </div>
     <h1>Architecture <span class="accent">Flows</span></h1>
     <p class="header-lead">
-      Interactive, animated diagrams for OpenShift AI Gateway and Models-as-a-Service (MaaS) architecture.
+      Interactive, animated diagrams for OpenShift AI Gateway and Models-as-a-Service (MaaS).
       Pick a flow below — each one walks through a scenario step-by-step with request/response details.
     </p>
   </header>
@@ -219,8 +223,10 @@ footer p + p { margin-top: 4px; }
     </div>
   </div>
 
-  <p class="section-label">Architecture flows</p>
-  <p class="section-desc">Production scenarios for AI Gateway and MaaS — happy paths, error cases, and policy flows.</p>
+  <div class="section-head">
+    <p class="section-label">Architecture flows</p>
+    <p class="section-desc">Production scenarios for AI Gateway and MaaS — happy paths, error cases, and policy flows.</p>
+  </div>
   <nav class="flows-grid">
     <a href="flows/ai-gateway/index.html" class="flow-card gateway">
       <span class="flow-card-tag gateway">AI Gateway</span>
@@ -246,17 +252,19 @@ footer p + p { margin-top: 4px; }
       <p>Multi-tenant request routing with per-tenant auth, rate limits, and model isolation across the full request/response path.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
-    <a href="flows/maas-policy-creation.html" class="flow-card maas">
+    <a href="flows/maas-multi-tenancy-deployment.html" class="flow-card maas">
       <span class="flow-card-tag maas">MaaS</span>
-      <h2>Policy Creation</h2>
-      <p>Creating AuthPolicies and RateLimitPolicies in Kubernetes and how the controller reconciles them into Authorino and Limitador.</p>
+      <h2>Multi-Tenancy Deployment</h2>
+      <p>One-gateway-per-tenant provisioning per ADR-MS-0003 — AITenant CR, Gateway in openshift-ingress, maas-api, and policy reconciliation.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
   </nav>
 
   <section class="more-section">
-    <p class="section-label">More</p>
-    <p class="section-desc">Framework docs, a minimal starter example, and the upstream project this site is built on.</p>
+    <div class="section-head">
+      <p class="section-label">More</p>
+      <p class="section-desc">Framework docs, a minimal starter example, and the upstream project this site is built on.</p>
+    </div>
     <div class="more-grid">
       <a href="examples/hello-world/index.html" class="more-card">
         <div class="more-icon">&#127758;</div>
@@ -266,12 +274,12 @@ footer p + p { margin-top: 4px; }
           <span class="link-hint">View example &#8594;</span>
         </div>
       </a>
-      <a href="https://github.com/jland-redhat/flowstory" class="more-card">
+      <a href="https://github.com/Jaland/flowstory" class="more-card">
         <div class="more-icon">&#128736;</div>
         <div class="more-body">
           <h3>Source repo</h3>
           <p>Diagram JSON, HTML templates, and the FlowStory engine powering these pages. Fork it to build your own flows.</p>
-          <span class="link-hint">jland-redhat/flowstory &#8594;</span>
+          <span class="link-hint">Jaland/flowstory &#8594;</span>
         </div>
       </a>
       <a href="https://flowstory.dev" target="_blank" rel="noopener" class="more-card">
@@ -287,7 +295,7 @@ footer p + p { margin-top: 4px; }
 
   <footer>
     <p>Built with <a href="https://flowstory.dev" target="_blank" rel="noopener">FlowStory</a> — forked from <a href="https://github.com/noyitz/flowstory" target="_blank" rel="noopener">noyitz/flowstory</a>.</p>
-    <p>Apache 2.0 · <a href="https://github.com/jland-redhat/flowstory">jland-redhat/flowstory</a></p>
+    <p>Apache 2.0 · <a href="https://github.com/Jaland/flowstory">Jaland/flowstory</a></p>
   </footer>
 </div>
 

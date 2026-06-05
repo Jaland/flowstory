@@ -1,0 +1,613 @@
+{
+  "meta": {
+    "title": "Multi-Tenancy Deployment Flow",
+    "author": "James Land",
+    "branding": {
+      "logo": "assets/openshift-icon.svg",
+      "title": "OpenShift AI"
+    }
+  },
+  "canvas": {
+    "width": 1450,
+    "height": 980
+  },
+  "nodes": {
+    "cluster": {
+      "x": 80,
+      "y": 10,
+      "w": 1340,
+      "h": 920,
+      "label": "OpenShift Cluster",
+      "type": "boundary",
+      "color": "#f0883e",
+      "labelAlign": "left"
+    },
+    "network-admin": {
+      "x": -70,
+      "y": 95,
+      "w": 140,
+      "h": 60,
+      "label": "Network Admin",
+      "type": "icon"
+    },
+    "rhoai-admin": {
+      "x": -70,
+      "y": 250,
+      "w": 140,
+      "h": 60,
+      "label": "RHOAI Admin",
+      "type": "icon"
+    },
+    "model-deployer": {
+      "x": -70,
+      "y": 720,
+      "w": 140,
+      "h": 60,
+      "label": "Model Deployer",
+      "type": "icon"
+    },
+    "tenant-admin": {
+      "x": -70,
+      "y": 560,
+      "w": 140,
+      "h": 60,
+      "label": "Tenant Admin",
+      "type": "icon"
+    },
+    "ingress-ns": {
+      "x": 110,
+      "y": 45,
+      "w": 960,
+      "h": 130,
+      "label": "openshift-ingress",
+      "sublabel": "Gateway & Auth Namespace",
+      "type": "container",
+      "color": "#f0883e"
+    },
+    "gateway-cr": {
+      "x": 150,
+      "y": 85,
+      "w": 300,
+      "h": 65,
+      "label": "Gateway CR",
+      "sublabel": "redteam (Envoy pods)",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "authpolicy": {
+      "x": 520,
+      "y": 85,
+      "w": 300,
+      "h": 65,
+      "label": "AuthPolicy",
+      "sublabel": "Kuadrant · from MaasAuthPolicy",
+      "color": "#d2a8ff",
+      "inner": true
+    },
+    "ai-tenants-ns": {
+      "x": 110,
+      "y": 200,
+      "w": 420,
+      "h": 110,
+      "label": "ai-tenants",
+      "sublabel": "Cluster Tenant Registry",
+      "type": "container",
+      "color": "#79c0ff"
+    },
+    "aitenant-cr": {
+      "x": 150,
+      "y": 235,
+      "w": 340,
+      "h": 55,
+      "label": "AITenant CR",
+      "sublabel": "redteam",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "control-ns": {
+      "x": 560,
+      "y": 200,
+      "w": 510,
+      "h": 110,
+      "label": "redhat-ai-applications",
+      "sublabel": "Control Plane",
+      "type": "container",
+      "color": "#8b949e"
+    },
+    "maas-controller": {
+      "x": 600,
+      "y": 235,
+      "w": 220,
+      "h": 55,
+      "label": "maas-controller",
+      "sublabel": "Reconciler",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "infra-ns": {
+      "x": 110,
+      "y": 335,
+      "w": 960,
+      "h": 120,
+      "label": "redhat-ai-gateway-infra",
+      "sublabel": "Per-Tenant maas-api",
+      "type": "container",
+      "color": "#8b949e"
+    },
+    "maas-api": {
+      "x": 150,
+      "y": 370,
+      "w": 300,
+      "h": 65,
+      "label": "maas-api",
+      "sublabel": "redteam instance",
+      "color": "#3fb950",
+      "inner": true
+    },
+    "httproute-api": {
+      "x": 520,
+      "y": 370,
+      "w": 300,
+      "h": 65,
+      "label": "HttpRoute",
+      "sublabel": "maas-api → Gateway",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "tenant-ns": {
+      "x": 110,
+      "y": 485,
+      "w": 960,
+      "h": 150,
+      "label": "ai-tenant-redteam",
+      "sublabel": "Tenant Admin Namespace",
+      "type": "container",
+      "color": "#d2a8ff"
+    },
+    "tenant-config": {
+      "x": 150,
+      "y": 520,
+      "w": 260,
+      "h": 50,
+      "label": "MaasTenantConfig",
+      "sublabel": "OIDC, quotas, defaults",
+      "color": "#79c0ff",
+      "inner": true
+    },
+    "authpolicy-cr": {
+      "x": 440,
+      "y": 520,
+      "w": 260,
+      "h": 50,
+      "label": "MaasAuthPolicy",
+      "sublabel": "access rules",
+      "color": "#3fb950",
+      "inner": true
+    },
+    "subscription": {
+      "x": 730,
+      "y": 520,
+      "w": 260,
+      "h": 50,
+      "label": "MaasSubscription",
+      "sublabel": "rate limits & quotas",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "tenant-label": {
+      "x": 150,
+      "y": 580,
+      "w": 840,
+      "h": 40,
+      "label": "label: ai-gateway.opendatahub.io/tenant",
+      "color": "#d2a8ff44",
+      "fontSize": 13,
+      "inner": true
+    },
+    "model-ns": {
+      "x": 110,
+      "y": 665,
+      "w": 960,
+      "h": 220,
+      "label": "ml-models",
+      "sublabel": "Model Namespace (user-chosen)",
+      "type": "container",
+      "color": "#8b949e"
+    },
+    "model": {
+      "x": 150,
+      "y": 705,
+      "w": 300,
+      "h": 50,
+      "label": "LlmInferenceService",
+      "sublabel": "refs AITenant redteam",
+      "color": "#3fb950",
+      "inner": true
+    },
+    "modelref": {
+      "x": 150,
+      "y": 770,
+      "w": 300,
+      "h": 50,
+      "label": "MaasModelRef",
+      "sublabel": "model registration",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "httproute-model": {
+      "x": 520,
+      "y": 705,
+      "w": 300,
+      "h": 50,
+      "label": "HttpRoute",
+      "sublabel": "inference → Gateway",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "ratelimit": {
+      "x": 520,
+      "y": 770,
+      "w": 300,
+      "h": 65,
+      "label": "TokenRateLimitPolicy",
+      "sublabel": "Kuadrant · from MaasSubscription",
+      "color": "#d2a8ff",
+      "inner": true
+    }
+  },
+  "tooltips": {
+    "cluster": {
+      "title": "OpenShift Cluster",
+      "description": "One-gateway-per-tenant architecture per ODH-ADR-MS-0003. Each tenant gets a dedicated Gateway (Envoy), maas-api instance, and tenant admin namespace with database-level isolation.",
+      "details": [
+        ["Pattern", "One Gateway per tenant"],
+        ["Tenant ID", "Hostname: {tenant}.{domain}"],
+        ["ADR", "ODH-ADR-MS-0003"],
+        ["Isolation", "Namespace + tenant_id in DB"]
+      ],
+      "links": [
+        ["ADR: AI Gateway Tenancy", "https://github.com/mariusdanciu/architecture-decision-records/blob/main/architecture-decision-records/model-serving/ODH-ADR-MS-0003-ai-gateway-tenancy.md"]
+      ]
+    },
+    "gateway-cr": {
+      "title": "Gateway CR (openshift-ingress)",
+      "description": "Dedicated Gateway API resource per tenant in openshift-ingress. Creates separate Envoy pods. Created by the network admin — not auto-provisioned by maas-controller. Tenant creation requires a Gateway to already exist.",
+      "details": [
+        ["Namespace", "openshift-ingress"],
+        ["API", "gateway.networking.k8s.io/v1"],
+        ["Created by", "Network Admin"],
+        ["Hostname", "redteam.{domain}"]
+      ]
+    },
+    "aitenant-cr": {
+      "title": "AITenant CR",
+      "description": "Cluster-level tenant registry entry. RHOAI admin creates this in the fixed ai-tenants namespace. Triggers maas-controller to provision all tenant-scoped resources.",
+      "details": [
+        ["Namespace", "ai-tenants"],
+        ["API", "maas.opendatahub.io/v1alpha1"],
+        ["Created by", "RHOAI Admin"],
+        ["Spec", "oidc, gateway.name, tls, resourceQuotas"]
+      ]
+    },
+    "maas-controller": {
+      "title": "maas-controller",
+      "description": "Reconciles AITenant CRs and watches labeled tenant namespaces. Provisions tenant namespace, MaasTenantConfig, maas-api, HttpRoutes, and Kuadrant policies.",
+      "details": [
+        ["Namespace", "redhat-ai-applications"],
+        ["Watches", "AITenant CRs, ai-tenant-* namespaces"],
+        ["Creates", "Namespace, maas-api, HttpRoute, policies"],
+        ["Does NOT create", "Gateway CR (network admin)"]
+      ]
+    },
+    "maas-api": {
+      "title": "maas-api (per tenant)",
+      "description": "Dedicated maas-api deployment per tenant in redhat-ai-gateway-infra. Option 1 from ADR — separate instance per tenant for traffic isolation and simpler OIDC validation.",
+      "details": [
+        ["Namespace", "redhat-ai-gateway-infra"],
+        ["Endpoints", "/v1/models, /v1/apikeys, /v1/subscriptions"],
+        ["DB", "Shared DB, filtered by tenant_id"],
+        ["Attached via", "HttpRoute → tenant Gateway"]
+      ]
+    },
+    "httproute-api": {
+      "title": "HttpRoute (maas-api)",
+      "description": "Routes maas-api traffic through the tenant's dedicated Gateway in openshift-ingress. Created by maas-controller during tenant provisioning.",
+      "details": [
+        ["Namespace", "redhat-ai-gateway-infra"],
+        ["Attached to", "Gateway CR (redteam)"],
+        ["Created by", "maas-controller"]
+      ]
+    },
+    "tenant-ns": {
+      "title": "ai-tenant-redteam",
+      "description": "Automatically created tenant admin namespace. Labeled ai-gateway.opendatahub.io/tenant. Holds MaasTenantConfig, MaasAuthPolicy, and MaasSubscription CRs.",
+      "details": [
+        ["Naming", "ai-tenant-{tenant-name}"],
+        ["Label", "ai-gateway.opendatahub.io/tenant"],
+        ["Created by", "maas-controller"],
+        ["Managed by", "Tenant Admin"]
+      ]
+    },
+    "tenant-config": {
+      "title": "MaasTenantConfig",
+      "description": "Tenant-specific defaults: API key expiration, observability endpoints, and default rate limits. Replaces the old Tenant CR.",
+      "details": [
+        ["Namespace", "ai-tenant-redteam"],
+        ["Created by", "maas-controller (default)"],
+        ["Contains", "apiKeyDefaults, observability, rateLimits"]
+      ]
+    },
+    "authpolicy-cr": {
+      "title": "MaasAuthPolicy",
+      "description": "Defines who can access models for this tenant. Created by Tenant Admin in the tenant namespace. Reconciled to Kuadrant AuthPolicy in openshift-ingress.",
+      "details": [
+        ["Namespace", "ai-tenant-redteam"],
+        ["Created by", "Tenant Admin"],
+        ["Reconciled to", "AuthPolicy in openshift-ingress"]
+      ]
+    },
+    "subscription": {
+      "title": "MaasSubscription",
+      "description": "Defines model quotas and per-user token rate limits. Created by Tenant Admin. Reconciled to TokenRateLimitPolicy.",
+      "details": [
+        ["Namespace", "ai-tenant-redteam"],
+        ["Created by", "Tenant Admin"],
+        ["Reconciled to", "TokenRateLimitPolicy"]
+      ]
+    },
+    "model": {
+      "title": "LlmInferenceService",
+      "description": "Model workload deployed by Model Deployer. Must reference exactly one AITenant (1:1 tenant-to-gateway). KServe creates HttpRoute and InferencePool.",
+      "details": [
+        ["Namespace", "ml-models (user-chosen)"],
+        ["Constraint", "One gateway per model"],
+        ["Created by", "Model Deployer"],
+        ["Note", "Not accessible until policies exist"]
+      ]
+    },
+    "modelref": {
+      "title": "MaasModelRef",
+      "description": "Registers the model with MaaS. Status surfaces tenant info from the attached Gateway. Model is deployed but not accessible until MaasAuthPolicy and MaasSubscription are reconciled.",
+      "details": [
+        ["Namespace", "ml-models"],
+        ["Created by", "Model Deployer"],
+        ["Exposes", "/v1/chat/completions via HttpRoute"]
+      ]
+    },
+    "httproute-model": {
+      "title": "HttpRoute (inference)",
+      "description": "Created by KServe for the LlmInferenceService. Attaches inference traffic to the tenant Gateway in openshift-ingress.",
+      "details": [
+        ["Namespace", "ml-models"],
+        ["Created by", "KServe controller"],
+        ["Attached to", "Gateway CR (redteam)"]
+      ]
+    },
+    "authpolicy": {
+      "title": "AuthPolicy (Kuadrant)",
+      "description": "Kuadrant AuthPolicy in openshift-ingress attached to the tenant Gateway. Enforces OIDC or API key validation at the data plane.",
+      "details": [
+        ["Namespace", "openshift-ingress"],
+        ["Source", "MaasAuthPolicy in ai-tenant-redteam"],
+        ["Attached to", "Gateway CR via targetRef"],
+        ["Created by", "maas-controller"]
+      ]
+    },
+    "ratelimit": {
+      "title": "TokenRateLimitPolicy (Kuadrant)",
+      "description": "Per-user rate limiting for model inference. Created by maas-controller from MaasSubscription CRs.",
+      "details": [
+        ["Namespace", "ml-models"],
+        ["Source", "MaasSubscription in ai-tenant-redteam"],
+        ["Attached to", "Model HttpRoute"],
+        ["Created by", "maas-controller"]
+      ]
+    },
+    "ingress-ns": {
+      "title": "openshift-ingress",
+      "description": "OpenShift ingress namespace hosting Gateway API resources and Kuadrant AuthPolicies. Each tenant's Gateway CR lives here with dedicated Envoy pods.",
+      "details": [
+        ["Contains", "Gateway CR, AuthPolicy per tenant"],
+        ["Managed by", "Network Admin + maas-controller"],
+        ["Traffic", "Isolated per tenant Envoy pods"]
+      ]
+    },
+    "ai-tenants-ns": {
+      "title": "ai-tenants Namespace",
+      "description": "Fixed cluster-level namespace for all AITenant CRs. Acts as the tenant registry visible to RHOAI admins.",
+      "details": [
+        ["Purpose", "Cluster tenant registry"],
+        ["Contains", "AITenant CRs only"],
+        ["Managed by", "RHOAI Admin"]
+      ]
+    },
+    "infra-ns": {
+      "title": "redhat-ai-gateway-infra",
+      "description": "Hosts per-tenant maas-api deployments and their HttpRoutes. maas-db-config secret also lives here (shared DB with tenant_id filtering).",
+      "details": [
+        ["Contains", "maas-api per tenant, HttpRoutes"],
+        ["Secret", "maas-db-config"],
+        ["Pattern", "Dedicated maas-api per tenant (ADR Option 1)"]
+      ]
+    }
+  },
+  "flows": {
+    "main": {
+      "label": "Tenant Deployment Flow",
+      "steps": [
+        {
+          "text": "1. Network Admin creates Gateway CR in openshift-ingress",
+          "mode": "arrow",
+          "from": "network-admin",
+          "to": "gateway-cr",
+          "color": "#f0883e",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "2. RHOAI Admin creates AITenant CR in ai-tenants namespace",
+          "mode": "arrow",
+          "from": "rhoai-admin",
+          "to": "aitenant-cr",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "3. maas-controller reconciles AITenant CR",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "aitenant-cr",
+          "color": "#58a6ff",
+          "num": 3,
+          "fromLeft": true,
+          "toRight": true,
+          "waypoints": [
+            { "x": 520, "y": 262 }
+          ]
+        },
+        {
+          "text": "4. Creates tenant admin namespace ai-tenant-redteam (labeled)",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "tenant-ns",
+          "color": "#d2a8ff",
+          "num": 4,
+          "fromBottom": true,
+          "toTop": true,
+          "waypoints": [
+            { "x": 710, "y": 320 },
+            { "x": 590, "y": 320 }
+          ]
+        },
+        {
+          "text": "5. Creates MaasTenantConfig in tenant namespace",
+          "mode": "lightup",
+          "target": "tenant-config",
+          "badge": 5
+        },
+        {
+          "text": "6. Deploys maas-api instance in redhat-ai-gateway-infra",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "maas-api",
+          "color": "#3fb950",
+          "num": 6,
+          "fromLeft": true,
+          "toRight": true,
+          "waypoints": [
+            { "x": 520, "y": 402 }
+          ]
+        },
+        {
+          "text": "7. Creates HttpRoute attaching maas-api to tenant Gateway",
+          "mode": "arrow",
+          "from": "maas-api",
+          "to": "httproute-api",
+          "color": "#58a6ff",
+          "num": 7,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "8. HttpRoute routes through Gateway in openshift-ingress",
+          "mode": "arrow",
+          "from": "httproute-api",
+          "to": "gateway-cr",
+          "color": "#f0883e",
+          "num": 8,
+          "fromTop": true,
+          "toBottom": true,
+          "waypoints": [
+            { "x": 670, "y": 330 },
+            { "x": 300, "y": 330 }
+          ]
+        },
+        {
+          "text": "9. Model Deployer creates LlmInferenceService (refs AITenant)",
+          "mode": "arrow",
+          "from": "model-deployer",
+          "to": "model",
+          "color": "#3fb950",
+          "num": 9,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "10. KServe creates HttpRoute for inference → tenant Gateway",
+          "mode": "lightup",
+          "target": "httproute-model",
+          "badge": 10
+        },
+        {
+          "text": "11. Model Deployer creates MaasModelRef",
+          "mode": "arrow",
+          "from": "model-deployer",
+          "to": "modelref",
+          "color": "#58a6ff",
+          "num": 11,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "12. Tenant Admin creates MaasAuthPolicy & MaasSubscription",
+          "mode": "arrow",
+          "from": "tenant-admin",
+          "to": "authpolicy-cr",
+          "color": "#3fb950",
+          "num": 12,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 280, "y": 545 }
+          ]
+        },
+        {
+          "text": "13. maas-controller creates AuthPolicy in openshift-ingress",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "authpolicy",
+          "color": "#d2a8ff",
+          "num": 13,
+          "fromTop": true,
+          "toBottom": true,
+          "waypoints": [
+            { "x": 710, "y": 180 },
+            { "x": 670, "y": 180 }
+          ]
+        },
+        {
+          "text": "14. maas-controller creates TokenRateLimitPolicy in model namespace",
+          "mode": "arrow",
+          "from": "maas-controller",
+          "to": "ratelimit",
+          "color": "#d2a8ff",
+          "num": 14,
+          "fromBottom": true,
+          "toTop": true,
+          "waypoints": [
+            { "x": 710, "y": 640 },
+            { "x": 670, "y": 640 }
+          ]
+        },
+        {
+          "text": "15. Tenant deployed — model accessible at redteam.{domain}",
+          "mode": "lightup",
+          "target": "gateway-cr",
+          "badge": "✓",
+          "errColor": "#3fb950"
+        }
+      ]
+    }
+  },
+  "legend": [
+    { "label": "Gateway / Ingress", "color": "#f0883e" },
+    { "label": "Tenant Registry", "color": "#79c0ff" },
+    { "label": "Control Plane", "color": "#58a6ff" },
+    { "label": "Tenant Resources", "color": "#d2a8ff" },
+    { "label": "Model Resources", "color": "#3fb950" }
+  ],
+  "defaultFlow": "main"
+}

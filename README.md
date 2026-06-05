@@ -2,65 +2,59 @@
 
 AI-agent-first animated flow diagram framework. Define architecture flows in JSON — the engine handles canvas rendering, step-by-step animation, and interactive playback.
 
-## What Makes FlowStory Different
+This fork hosts interactive architecture diagrams for AI Gateway and MaaS. Browse them on **[jaland.github.io/flowstory](https://jaland.github.io/flowstory/)**.
 
-- **AI-agent-first**: Designed for Claude, GPT, and other AI tools to generate diagrams programmatically — not drag-and-drop
-- **Animated storytelling**: Step-by-step narrative flows that tell a story, not static diagrams
-- **Declarative JSON**: Define nodes, flows, tooltips, and inspector mutations in a single JSON file
-- **Zero dependencies**: Pure canvas-based rendering, no external libraries
+## Architecture Flows
 
-## Quick Start — Generate a Diagram in 2 Minutes
+| Flow | Link |
+|------|------|
+| AI Inference Gateway | [Open](https://jaland.github.io/flowstory/flows/ai-gateway/index.html) |
+| MaaS Inference | [Open](https://jaland.github.io/flowstory/flows/maas-inference.html) |
+| MaaS Key Minting | [Open](https://jaland.github.io/flowstory/flows/maas-key-minting.html) |
+| MaaS Multi-Tenancy | [Open](https://jaland.github.io/flowstory/flows/maas-multi-tenancy.html) |
+| Multi-Tenancy Deployment | [Open](https://jaland.github.io/flowstory/flows/maas-multi-tenancy-deployment.html) |
+
+## Examples
+
+- [Hello World](https://jaland.github.io/flowstory/examples/hello-world/index.html) — Minimal 3-node example
+- [Hello World (source)](examples/hello-world/) — Local path
+
+## Quick Start — Generate a Diagram
 
 **No install needed.** Open Claude Code, paste one prompt, get an animated diagram.
 
 **[Quick Start Guide](docs/quick-start-prompt.md)** — step-by-step instructions with the prompt to copy-paste.
-
-## Live Examples
-
-**Architecture Flows:**
-- [AI Inference Gateway](https://jland-redhat.github.io/flowstory/flows/ai-gateway/index.html) — Red Hat AI Gateway architecture
-- [MaaS Inference Flow](https://jland-redhat.github.io/flowstory/flows/maas-inference.html) — Auth, rate limiting, and model serving
-- [MaaS Key Minting](https://jland-redhat.github.io/flowstory/flows/maas-key-minting.html) — API key generation and storage
-- [MaaS Multi-Tenancy](https://jland-redhat.github.io/flowstory/flows/maas-multi-tenancy.html) — Complete multi-tenant architecture
-- [MaaS Policy Creation](https://jland-redhat.github.io/flowstory/flows/maas-policy-creation.html) — Kubernetes policy reconciliation
-
-**Examples:**
-- [Hello World](https://jland-redhat.github.io/flowstory/examples/hello-world/index.html) — Minimal 3-node example
 
 ## Viewing Diagrams Locally
 
 HTML files use ES6 modules and require a local server (browsers block `file://` URLs):
 
 ```bash
-# Clean start (kills any old server first)
-npm run start
+npm run start   # kills any old server, then starts on port 9000
 
 # Or manually
-npm run dev        # Start server on port 9000
-npm run stop       # Stop server
+npm run dev
 
 # Then open in browser
+http://localhost:9000/
 http://localhost:9000/flows/maas-inference.html
 ```
 
 **One-liner alternative** (no npm needed):
+
 ```bash
 python3 -m http.server 9000
 ```
 
 ## For AI Agents
 
-See [CLAUDE.md](CLAUDE.md) for the complete schema reference.
+- [CLAUDE.md](CLAUDE.md) — complete schema reference
+- [docs/agent-prompt.md](docs/agent-prompt.md) — copy-pasteable prompt for any AI tool
 
-See [docs/agent-prompt.md](docs/agent-prompt.md) for a copy-pasteable prompt for any AI tool.
+## Links
 
-## Examples
-
-- [Hello World](examples/hello-world/) — Minimal 3-node example
-
-## Site
-
-Browse flows at [jland-redhat.github.io/flowstory](https://jland-redhat.github.io/flowstory/). Built with [FlowStory](https://flowstory.dev) by Noy Tzikow.
+- **This repo**: [github.com/Jaland/flowstory](https://github.com/Jaland/flowstory)
+- **Upstream framework**: [flowstory.dev](https://flowstory.dev) by Noy Tzikow · [noyitz/flowstory](https://github.com/noyitz/flowstory)
 
 ## License
 

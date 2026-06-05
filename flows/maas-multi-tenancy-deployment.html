@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MaaS Multi-Tenancy: Policy Creation & Reconciliation</title>
+<title>Multi-Tenancy Deployment Flow</title>
 <link rel="stylesheet" href="../templates/style.css">
 </head>
 <body>
@@ -45,7 +45,7 @@
 <script type="module">
 import { FlowStory } from '../dist/flowstory.min.js';
 
-const diagram = await fetch('./maas-policy-creation.json').then(r => r.json());
+const diagram = await fetch('./maas-multi-tenancy-deployment.json').then(r => r.json());
 
 const viz = new FlowStory(document.getElementById('fs-canvas'), {
   stepsContainer: document.getElementById('fs-steps-container'),
