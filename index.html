@@ -28,6 +28,14 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   transition: background .3s, color .3s;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, #58a6ff0a 0%, #d2a8ff06 40%, transparent 70%);
+  pointer-events: none; z-index: 0;
 }
 a { color: var(--accent); text-decoration: none; transition: color .2s; }
 a:hover { color: var(--accent2); }
@@ -38,86 +46,142 @@ a:hover { color: var(--accent2); }
   border: 1px solid var(--border2); background: var(--bg2);
   color: var(--text); cursor: pointer; font-size: 20px;
   display: flex; align-items: center; justify-content: center;
+  transition: border-color .2s;
 }
 .theme-toggle:hover { border-color: var(--accent); }
 
-.container { max-width: 960px; margin: 0 auto; padding: 56px 24px 48px; }
+.container { max-width: 980px; margin: 0 auto; padding: 56px 24px 48px; position: relative; z-index: 1; }
 
-.header { margin-bottom: 40px; }
-.header-top {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
-}
+/* Header */
+.header { margin-bottom: 36px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .badge {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 12px; border: 1px solid var(--border2); border-radius: 20px;
-  font-size: 12px; color: var(--dim); background: var(--bg2);
+  padding: 5px 14px; border: 1px solid var(--border2); border-radius: 20px;
+  font-size: 12px; font-weight: 500; color: var(--dim); background: var(--bg2);
 }
-.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px #3fb95066; }
 .header h1 {
-  font-size: clamp(28px, 5vw, 40px);
-  font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
+  font-size: clamp(32px, 5vw, 44px);
+  font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; line-height: 1.15;
 }
 .header h1 .accent {
-  background: linear-gradient(135deg, #58a6ff, #d2a8ff);
+  background: linear-gradient(135deg, #58a6ff, #d2a8ff, #f0883e);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.header p { color: var(--dim); font-size: 16px; max-width: 540px; }
+.header-lead { color: var(--dim); font-size: 17px; max-width: 620px; line-height: 1.7; margin-bottom: 24px; }
+
+/* About blurb */
+.about {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  margin-bottom: 44px;
+}
+.about-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+}
+.about-icon { font-size: 22px; margin-bottom: 10px; line-height: 1; }
+.about-item h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.about-item p { font-size: 13px; color: var(--dim); line-height: 1.55; }
 
 .section-label {
   font-size: 12px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1.5px; color: var(--muted); margin-bottom: 16px;
+  letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px;
+}
+.section-desc {
+  font-size: 14px; color: var(--dim); margin-bottom: 18px; max-width: 640px;
 }
 
+/* Flow cards */
 .flows-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 .flow-card {
   display: flex; flex-direction: column;
   background: var(--bg2); border: 1px solid var(--border);
-  border-radius: 12px; padding: 20px 22px;
+  border-radius: 14px; padding: 22px 24px;
   color: var(--text); text-decoration: none;
-  transition: all .2s;
+  transition: all .25s;
+  position: relative; overflow: hidden;
 }
+.flow-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--card-accent, var(--accent)), transparent);
+  opacity: .7;
+}
+.flow-card.gateway { --card-accent: var(--orange); }
+.flow-card.maas { --card-accent: var(--purple); }
 .flow-card:hover {
+  border-color: var(--card-accent, var(--accent));
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px var(--hover-glow);
+  color: var(--text);
+}
+.flow-card-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; margin-bottom: 10px;
+  padding: 3px 8px; border-radius: 4px;
+}
+.flow-card-tag.gateway { color: var(--orange); background: #f0883e18; border: 1px solid #f0883e33; }
+.flow-card-tag.maas { color: var(--purple); background: #d2a8ff18; border: 1px solid #d2a8ff33; }
+.flow-card h2 { font-size: 17px; font-weight: 650; margin-bottom: 8px; letter-spacing: -0.2px; }
+.flow-card p { font-size: 13px; color: var(--dim); line-height: 1.55; flex: 1; }
+.flow-card-arrow {
+  margin-top: 16px; font-size: 13px; font-weight: 600; color: var(--card-accent, var(--accent));
+  display: flex; align-items: center; gap: 6px;
+}
+.flow-card:hover .flow-card-arrow { gap: 10px; transition: gap .2s; }
+
+/* More section */
+.more-section { margin-bottom: 48px; }
+.more-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.more-card {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px 22px;
+  color: var(--text); text-decoration: none;
+  transition: all .25s;
+}
+.more-card:hover {
   border-color: var(--accent);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--hover-glow);
   color: var(--text);
 }
-.flow-card-tag {
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.5px; margin-bottom: 8px;
+.more-icon {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; background: var(--bg3); border: 1px solid var(--border2);
 }
-.flow-card-tag.maas { color: var(--purple); }
-.flow-card-tag.gateway { color: var(--orange); }
-.flow-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-.flow-card p { font-size: 13px; color: var(--dim); line-height: 1.5; flex: 1; }
-.flow-card-arrow {
-  margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--accent);
+.more-card:hover .more-icon { border-color: var(--accent); background: #58a6ff11; }
+.more-body h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.more-body p { font-size: 13px; color: var(--dim); line-height: 1.5; }
+.more-body .link-hint {
+  display: inline-block; margin-top: 8px; font-size: 12px; font-weight: 600;
+  color: var(--accent);
 }
-
-.secondary-links {
-  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 48px;
-}
-.secondary-links a {
-  padding: 8px 16px; border: 1px solid var(--border2); border-radius: 8px;
-  font-size: 13px; color: var(--dim);
-}
-.secondary-links a:hover { border-color: var(--accent); color: var(--accent); }
 
 footer {
   padding-top: 32px; border-top: 1px solid var(--border);
-  font-size: 13px; color: var(--muted);
+  font-size: 13px; color: var(--muted); line-height: 1.7;
 }
-footer p + p { margin-top: 6px; }
+footer p + p { margin-top: 4px; }
 
+@media (max-width: 720px) {
+  .about { grid-template-columns: 1fr; }
+}
 @media (max-width: 600px) {
   .container { padding: 40px 16px 32px; }
-  .flows-grid { grid-template-columns: 1fr; }
+  .flows-grid, .more-grid { grid-template-columns: 1fr; }
+  .header-lead { font-size: 15px; }
 }
 </style>
 </head>
@@ -131,49 +195,95 @@ footer p + p { margin-top: 6px; }
       <span class="badge"><span class="badge-dot"></span> jland-redhat</span>
     </div>
     <h1>Architecture <span class="accent">Flows</span></h1>
-    <p>Animated, step-by-step diagrams for MaaS and AI Gateway architecture.</p>
+    <p class="header-lead">
+      Interactive, animated diagrams for OpenShift AI Gateway and Models-as-a-Service (MaaS) architecture.
+      Pick a flow below — each one walks through a scenario step-by-step with request/response details.
+    </p>
   </header>
 
-  <p class="section-label">Flows</p>
+  <div class="about">
+    <div class="about-item">
+      <div class="about-icon">&#9654;</div>
+      <h3>Step-by-step playback</h3>
+      <p>Hit Start and watch packets move through the system. Jump to any step, loop, or change speed.</p>
+    </div>
+    <div class="about-item">
+      <div class="about-icon">&#128269;</div>
+      <h3>Request inspector</h3>
+      <p>The right panel shows headers and body mutations as the flow progresses — useful for understanding what changes at each hop.</p>
+    </div>
+    <div class="about-item">
+      <div class="about-icon">&#128161;</div>
+      <h3>Click any node</h3>
+      <p>Nodes have tooltips with component details, ports, and links to upstream docs and repos.</p>
+    </div>
+  </div>
+
+  <p class="section-label">Architecture flows</p>
+  <p class="section-desc">Production scenarios for AI Gateway and MaaS — happy paths, error cases, and policy flows.</p>
   <nav class="flows-grid">
-    <a href="flows/ai-gateway/index.html" class="flow-card">
+    <a href="flows/ai-gateway/index.html" class="flow-card gateway">
       <span class="flow-card-tag gateway">AI Gateway</span>
       <h2>AI Inference Gateway</h2>
-      <p>Red Hat AI Gateway — request/response paths, plugins, auth, scheduling, and external providers.</p>
+      <p>Full Red Hat AI Gateway stack — Envoy proxy, payload plugins, auth, EPP scheduling, vLLM serving, and external model providers.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
-    <a href="flows/maas-inference.html" class="flow-card">
+    <a href="flows/maas-inference.html" class="flow-card maas">
       <span class="flow-card-tag maas">MaaS</span>
       <h2>Inference Flow</h2>
-      <p>Auth, rate limiting, and model serving — happy path plus error scenarios.</p>
+      <p>End-to-end inference request: API key auth, rate limiting, model routing, and response — plus invalid-key and rate-limit errors.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
-    <a href="flows/maas-key-minting.html" class="flow-card">
+    <a href="flows/maas-key-minting.html" class="flow-card maas">
       <span class="flow-card-tag maas">MaaS</span>
       <h2>Key Minting</h2>
-      <p>API key generation, hashing, and storage through Gateway API and MaaS API.</p>
+      <p>How API keys are generated, hashed, and stored — from user request through Gateway API, AuthPolicy, and the MaaS API to PostgreSQL.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
-    <a href="flows/maas-multi-tenancy.html" class="flow-card">
+    <a href="flows/maas-multi-tenancy.html" class="flow-card maas">
       <span class="flow-card-tag maas">MaaS</span>
       <h2>Multi-Tenancy</h2>
-      <p>Multi-tenant routing, auth enforcement, rate limiting, and inference.</p>
+      <p>Multi-tenant request routing with per-tenant auth, rate limits, and model isolation across the full request/response path.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
-    <a href="flows/maas-policy-creation.html" class="flow-card">
+    <a href="flows/maas-policy-creation.html" class="flow-card maas">
       <span class="flow-card-tag maas">MaaS</span>
       <h2>Policy Creation</h2>
-      <p>AuthPolicy and RateLimitPolicy creation, validation, and reconciliation.</p>
+      <p>Creating AuthPolicies and RateLimitPolicies in Kubernetes and how the controller reconciles them into Authorino and Limitador.</p>
       <span class="flow-card-arrow">Open flow &#8594;</span>
     </a>
   </nav>
 
-  <p class="section-label">More</p>
-  <div class="secondary-links">
-    <a href="examples/hello-world/index.html">Hello World example</a>
-    <a href="https://github.com/jland-redhat/flowstory">This repo</a>
-    <a href="https://flowstory.dev" target="_blank" rel="noopener">FlowStory by Noy Tzikow</a>
-  </div>
+  <section class="more-section">
+    <p class="section-label">More</p>
+    <p class="section-desc">Framework docs, a minimal starter example, and the upstream project this site is built on.</p>
+    <div class="more-grid">
+      <a href="examples/hello-world/index.html" class="more-card">
+        <div class="more-icon">&#127758;</div>
+        <div class="more-body">
+          <h3>Hello World</h3>
+          <p>Minimal 3-node example — client, server, database — to see how FlowStory works before diving into the full flows.</p>
+          <span class="link-hint">View example &#8594;</span>
+        </div>
+      </a>
+      <a href="https://github.com/jland-redhat/flowstory" class="more-card">
+        <div class="more-icon">&#128736;</div>
+        <div class="more-body">
+          <h3>Source repo</h3>
+          <p>Diagram JSON, HTML templates, and the FlowStory engine powering these pages. Fork it to build your own flows.</p>
+          <span class="link-hint">jland-redhat/flowstory &#8594;</span>
+        </div>
+      </a>
+      <a href="https://flowstory.dev" target="_blank" rel="noopener" class="more-card">
+        <div class="more-icon">&#10024;</div>
+        <div class="more-body">
+          <h3>FlowStory</h3>
+          <p>The AI-agent-first diagram framework by Noy Tzikow. This site is a fork — visit flowstory.dev for docs, schema reference, and the gallery.</p>
+          <span class="link-hint">flowstory.dev &#8594;</span>
+        </div>
+      </a>
+    </div>
+  </section>
 
   <footer>
     <p>Built with <a href="https://flowstory.dev" target="_blank" rel="noopener">FlowStory</a> — forked from <a href="https://github.com/noyitz/flowstory" target="_blank" rel="noopener">noyitz/flowstory</a>.</p>
