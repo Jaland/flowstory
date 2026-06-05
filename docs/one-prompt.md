@@ -20,7 +20,7 @@ This is a framework for creating animated step-by-step architecture flow diagram
    - Auto-plays in loop mode on page load
    - Has all the UI: flow selector, play/pause, speed, loop, reset, theme toggle, steps panel, inspector panel
 
-Use the template structure from: https://raw.githubusercontent.com/jland-redhat/flowstory/main/examples/ai-gateway/index.html
+Use the template structure from: https://raw.githubusercontent.com/jland-redhat/flowstory/main/flows/ai-gateway/index.html
 But instead of loading diagram.json from a file, embed the JSON directly in the script.
 
 Here are the resources to learn from and the flow I want to visualize:

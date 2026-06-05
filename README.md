@@ -17,14 +17,15 @@ AI-agent-first animated flow diagram framework. Define architecture flows in JSO
 
 ## Live Examples
 
-**MaaS Flow Diagrams:**
+**Architecture Flows:**
+- [AI Inference Gateway](https://jland-redhat.github.io/flowstory/flows/ai-gateway/index.html) — Red Hat AI Gateway architecture
 - [MaaS Inference Flow](https://jland-redhat.github.io/flowstory/flows/maas-inference.html) — Auth, rate limiting, and model serving
 - [MaaS Key Minting](https://jland-redhat.github.io/flowstory/flows/maas-key-minting.html) — API key generation and storage
 - [MaaS Multi-Tenancy](https://jland-redhat.github.io/flowstory/flows/maas-multi-tenancy.html) — Complete multi-tenant architecture
 - [MaaS Policy Creation](https://jland-redhat.github.io/flowstory/flows/maas-policy-creation.html) — Kubernetes policy reconciliation
 
-**Other Examples:**
-- [AI Inference Gateway](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html) — Red Hat AI Gateway architecture
+**Examples:**
+- [Hello World](https://jland-redhat.github.io/flowstory/examples/hello-world/index.html) — Minimal 3-node example
 
 ## Viewing Diagrams Locally
 
@@ -55,12 +56,11 @@ See [docs/agent-prompt.md](docs/agent-prompt.md) for a copy-pasteable prompt for
 
 ## Examples
 
-- [AI Inference Gateway](examples/ai-gateway/) — Red Hat AI Gateway architecture flow
 - [Hello World](examples/hello-world/) — Minimal 3-node example
 
-## Gallery
+## Site
 
-Browse examples on [GitHub Pages](https://Jaland.github.io/flowstory/).
+Browse flows at [jland-redhat.github.io/flowstory](https://jland-redhat.github.io/flowstory/). Built with [FlowStory](https://flowstory.dev) by Noy Tzikow.
 
 ## License
 

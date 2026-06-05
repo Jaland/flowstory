@@ -13,7 +13,7 @@ Start a **new session**.
 ```
 Read this guide: https://raw.githubusercontent.com/jland-redhat/flowstory/main/CLAUDE.md
 
-Then read this template: https://raw.githubusercontent.com/jland-redhat/flowstory/main/examples/ai-gateway/index.html
+Then read this template: https://raw.githubusercontent.com/jland-redhat/flowstory/main/flows/ai-gateway/index.html
 
 Generate a SINGLE self-contained HTML file at ./flow.html that:
 - Loads CSS from: https://jland-redhat.github.io/flowstory/templates/style.css
@@ -76,7 +76,7 @@ The generated `flow.html` is fully self-contained. You can:
 
 ## Example Output
 
-See a live example: [AI Inference Gateway Flow Visualizer](https://jland-redhat.github.io/flowstory/examples/ai-gateway/index.html)
+See a live example: [AI Inference Gateway Flow Visualizer](https://jland-redhat.github.io/flowstory/flows/ai-gateway/index.html)
 
 ## Links
 

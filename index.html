@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FlowStory — AI-Agent-First Animated Flow Diagrams</title>
+<title>Architecture Flows — jland-redhat</title>
 <style>
 :root {
   --bg: #0a0a0f; --bg2: #161b22; --bg3: #21262d;
   --text: #e2e8f0; --dim: #8b949e; --muted: #484f58;
   --border: #21262d; --border2: #30363d;
   --accent: #58a6ff; --accent2: #79c0ff;
-  --green: #3fb950; --orange: #f0883e; --red: #f85149; --purple: #d2a8ff;
+  --green: #3fb950; --orange: #f0883e; --purple: #d2a8ff;
   --card-shadow: rgba(0,0,0,0.4); --hover-glow: rgba(88,166,255,0.15);
 }
 body.light {
@@ -20,489 +20,166 @@ body.light {
   --accent: #0969da; --accent2: #0550ae;
   --card-shadow: rgba(0,0,0,0.08); --hover-glow: rgba(9,105,218,0.1);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .3s,color .3s}
-a{color:var(--accent);text-decoration:none;transition:color .2s}
-a:hover{color:var(--accent2)}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background .3s, color .3s;
+}
+a { color: var(--accent); text-decoration: none; transition: color .2s; }
+a:hover { color: var(--accent2); }
 
-/* Theme toggle */
-.theme-toggle{position:fixed;top:16px;right:16px;z-index:100;width:40px;height:40px;border-radius:10px;border:1px solid var(--border2);background:var(--bg2);color:var(--text);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.theme-toggle:hover{border-color:var(--accent)}
+.theme-toggle {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--bg2);
+  color: var(--text); cursor: pointer; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+.theme-toggle:hover { border-color: var(--accent); }
 
-/* Hero */
-.hero{min-height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px 0;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,#58a6ff08 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--border2);border-radius:20px;font-size:13px;color:var(--dim);margin-bottom:32px;background:var(--bg2)}
-.hero-badge span{color:var(--green);font-weight:600}
-.hero h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;max-width:800px;margin-bottom:20px}
-.hero h1 .gradient{background:linear-gradient(135deg,#58a6ff,#d2a8ff,#f0883e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:clamp(16px,2vw,20px);color:var(--dim);max-width:600px;margin-bottom:40px;line-height:1.7}
-.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
-.btn{padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;gap:8px}
-.btn-primary{background:var(--accent);color:#fff}
-body.light .btn-primary{color:#fff}
-.btn-primary:hover{filter:brightness(1.15);transform:translateY(-1px);box-shadow:0 4px 20px var(--hover-glow)}
-.btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
-.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.container { max-width: 960px; margin: 0 auto; padding: 56px 24px 48px; }
 
-/* Demo section */
-.demo-section{padding:0 24px 80px;max-width:800px;margin:0 auto}
-.demo-label{text-align:center;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:16px}
-.demo-card{display:flex;text-decoration:none;color:var(--text);background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .25s;box-shadow:0 8px 32px var(--card-shadow)}
-.demo-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 16px 48px var(--hover-glow)}
-.demo-card-left{flex:1;padding:32px}
-.demo-card-title{font-size:22px;font-weight:700;margin-bottom:4px}
-.demo-card-subtitle{font-size:14px;color:var(--dim);margin-bottom:16px}
-.demo-card-stats{display:flex;gap:16px;margin-bottom:16px;font-size:12px;color:var(--accent);font-weight:600}
-.demo-card-stats span{padding:4px 10px;background:#58a6ff11;border:1px solid #58a6ff33;border-radius:6px}
-body.light .demo-card-stats span{background:#0969da08;border-color:#0969da22}
-.demo-card-desc{font-size:13px;color:var(--dim);line-height:1.6}
-.demo-card-right{width:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#58a6ff11,#d2a8ff11);border-left:1px solid var(--border)}
-.demo-card-play{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;padding-left:4px;box-shadow:0 4px 16px var(--hover-glow);transition:transform .2s}
-.demo-card:hover .demo-card-play{transform:scale(1.1)}
-.demo-card-play-label{font-size:12px;color:var(--dim);font-weight:600}
+.header { margin-bottom: 40px; }
+.header-top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border: 1px solid var(--border2); border-radius: 20px;
+  font-size: 12px; color: var(--dim); background: var(--bg2);
+}
+.badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.header h1 {
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
+}
+.header h1 .accent {
+  background: linear-gradient(135deg, #58a6ff, #d2a8ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header p { color: var(--dim); font-size: 16px; max-width: 540px; }
 
-/* Comic conversation */
-.comic{padding:40px 24px 20px;max-width:640px;margin:0 auto;overflow:hidden}
-.comic-title{text-align:center;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:32px}
-.bubble-row{display:flex;gap:12px;margin-bottom:20px;align-items:flex-start;opacity:0;transform:translateY(30px);transition:opacity .5s ease,transform .5s ease}
-.bubble-row.visible{opacity:1;transform:translateY(0)}
-.bubble-row.right{flex-direction:row-reverse}
-.avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:2px solid var(--border2)}
-.avatar-blue{background:#58a6ff22;border-color:#58a6ff44}
-.avatar-purple{background:#d2a8ff22;border-color:#d2a8ff44}
-.bubble{max-width:420px;padding:14px 18px;border-radius:16px;font-size:14px;line-height:1.6;position:relative}
-.bubble-left{background:var(--bg2);border:1px solid var(--border);border-bottom-left-radius:4px;color:var(--text)}
-.bubble-right{background:linear-gradient(135deg,#58a6ff18,#d2a8ff18);border:1px solid #58a6ff33;border-bottom-right-radius:4px;color:var(--text)}
-.bubble .dim{color:var(--dim)}
-.bubble strong{color:var(--accent)}
-.bubble .strike{color:#f85149}
-
-/* Features */
-.features{padding:40px 24px 80px;max-width:1100px;margin:0 auto}
-.features h2{text-align:center;font-size:32px;font-weight:700;margin-bottom:12px;letter-spacing:-0.5px}
-.features .subtitle{text-align:center;color:var(--dim);font-size:17px;margin-bottom:48px}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-.feature-card{padding:28px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;transition:all .2s}
-.feature-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px var(--card-shadow)}
-.feature-icon{font-size:28px;margin-bottom:12px}
-.feature-card h3{font-size:17px;font-weight:600;margin-bottom:8px}
-.feature-card p{font-size:14px;color:var(--dim);line-height:1.6}
-
-/* How it works */
-.how{padding:80px 24px;max-width:900px;margin:0 auto}
-.how h2{text-align:center;font-size:32px;font-weight:700;margin-bottom:48px;letter-spacing:-0.5px}
-.step-list{display:flex;flex-direction:column;gap:32px}
-.step-item{display:flex;gap:20px;align-items:flex-start}
-.step-num{flex-shrink:0;width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#58a6ff22,#d2a8ff22);border:1px solid #58a6ff44;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:var(--accent)}
-.step-content h3{font-size:17px;font-weight:600;margin-bottom:4px}
-.step-content p{font-size:14px;color:var(--dim)}
-.step-content code{background:var(--bg3);padding:2px 8px;border-radius:4px;font-size:13px;color:var(--accent);font-family:'SF Mono',Menlo,monospace}
-
-/* CTA */
-.cta{padding:80px 24px;text-align:center}
-.cta h2{font-size:28px;font-weight:700;margin-bottom:12px}
-.cta p{color:var(--dim);margin-bottom:32px;font-size:16px}
-.cta-links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-.cta-link{padding:8px 20px;border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--dim);transition:all .2s}
-.cta-link:hover{border-color:var(--accent);color:var(--accent)}
-
-/* Mobile */
-@media(max-width:600px){
-  .hero{padding:24px 16px 0}
-  .hero h1{font-size:28px}
-  .hero p{font-size:14px;margin-bottom:20px}
-  .hero-badge{font-size:11px;padding:4px 12px}
-  .features-grid{grid-template-columns:1fr}
-  .comic{padding:40px 16px}
-  .bubble{max-width:300px;font-size:13px;padding:10px 14px}
-  .step-item{gap:12px}
-  .step-content h3{font-size:15px}
-  .step-content p{font-size:13px}
-  .how{padding:40px 16px}
-  .features{padding:40px 16px}
-  .btn{padding:10px 20px;font-size:14px}
-  .theme-toggle{width:34px;height:34px;font-size:16px;top:10px;right:10px}
+.section-label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1.5px; color: var(--muted); margin-bottom: 16px;
 }
 
-/* Footer */
-footer{padding:40px 24px;border-top:1px solid var(--border);text-align:center;color:var(--muted);font-size:13px}
-footer a{color:var(--muted)}
-footer a:hover{color:var(--dim)}
+.flows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.flow-card {
+  display: flex; flex-direction: column;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 22px;
+  color: var(--text); text-decoration: none;
+  transition: all .2s;
+}
+.flow-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--hover-glow);
+  color: var(--text);
+}
+.flow-card-tag {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.flow-card-tag.maas { color: var(--purple); }
+.flow-card-tag.gateway { color: var(--orange); }
+.flow-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+.flow-card p { font-size: 13px; color: var(--dim); line-height: 1.5; flex: 1; }
+.flow-card-arrow {
+  margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--accent);
+}
+
+.secondary-links {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 48px;
+}
+.secondary-links a {
+  padding: 8px 16px; border: 1px solid var(--border2); border-radius: 8px;
+  font-size: 13px; color: var(--dim);
+}
+.secondary-links a:hover { border-color: var(--accent); color: var(--accent); }
+
+footer {
+  padding-top: 32px; border-top: 1px solid var(--border);
+  font-size: 13px; color: var(--muted);
+}
+footer p + p { margin-top: 6px; }
+
+@media (max-width: 600px) {
+  .container { padding: 40px 16px 32px; }
+  .flows-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <button class="theme-toggle" id="theme-toggle" onclick="document.body.classList.toggle('light');this.textContent=document.body.classList.contains('light')?'☀':'☾'">&#9790;</button>
 
-<section class="hero">
-  <div class="hero-badge"><span>Open Source</span> Apache 2.0</div>
-  <h1>Animated flow diagrams,<br><span class="gradient">generated by AI</span></h1>
-  <p>Describe your architecture to an AI agent. Get back a fully animated, interactive flow diagram. No manual drawing — just prompt and share.</p>
-  <div style="width:100%;max-width:900px;margin:24px auto 0">
-    <canvas id="hero-canvas" style="width:100%;display:block"></canvas>
-  </div>
-  <div style="text-align:center;margin:28px 0 12px">
-    <h2 style="font-size:24px;font-weight:800;margin-bottom:8px">Get Started in 2 Minutes</h2>
-    <p style="color:var(--dim);font-size:14px;margin-bottom:16px">No install. No dependencies. Just a prompt and your architecture docs.</p>
-    <a href="docs/quick-start-prompt.html" class="btn btn-primary" style="padding:12px 32px;font-size:15px">Quick Start Guide</a>
-  </div>
-  <div class="hero-actions" style="margin-top:12px;margin-bottom:20px">
-    <a href="https://github.com/jland-redhat/flowstory" class="btn btn-secondary">GitHub</a>
-    <a href="flows/" class="btn btn-secondary">&#128193; MaaS Flow Gallery</a>
-    <a href="examples/ai-gateway/index.html" class="btn btn-secondary">&#9654; Live Demo</a>
-  </div>
-</section>
-
-<section class="comic">
-  <div class="comic-title">Meanwhile, at every engineering team...</div>
-
-  <div class="bubble-row">
-    <div class="avatar avatar-blue">&#129299;</div>
-    <div class="bubble bubble-left">Hey, I need to visualize our auth flow for the design review. Know any good <span class="strike">drag-and-drop</span> diagram tools?</div>
-  </div>
-
-  <div class="bubble-row right">
-    <div class="avatar avatar-purple">&#128105;&#8205;&#128187;</div>
-    <div class="bubble bubble-right">It's 2026. You have an AI agent that already knows your codebase. <strong>Just describe what you want.</strong></div>
-  </div>
-
-  <div class="bubble-row">
-    <div class="avatar avatar-blue">&#129299;</div>
-    <div class="bubble bubble-left">But I need it animated, step-by-step, with request/response details...</div>
-  </div>
-
-  <div class="bubble-row right">
-    <div class="avatar avatar-purple">&#128105;&#8205;&#128187;</div>
-    <div class="bubble bubble-right">Paste your architecture docs + one prompt into any AI coding tool. You'll get a fully animated flow diagram in minutes. <strong>Then iterate with screenshots.</strong></div>
-  </div>
-
-  <div class="bubble-row">
-    <div class="avatar avatar-blue">&#129299;</div>
-    <div class="bubble bubble-left">Wait... no Figma? No draw.io? No manually dragging boxes around?</div>
-  </div>
-
-  <div class="bubble-row right">
-    <div class="avatar avatar-purple">&#128105;&#8205;&#128187;</div>
-    <div class="bubble bubble-right">That's the old way. The AI reads your docs, understands the architecture, and generates the diagram. You just tell it what to fix. <strong>Welcome to FlowStory.</strong></div>
-  </div>
-</section>
-
-<section class="features">
-  <h2>Why FlowStory</h2>
-  <p class="subtitle">No existing tool combines AI-agent generation with animated narrative flows</p>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon">&#129302;</div>
-      <h3>AI-Agent First</h3>
-      <p>Designed for AI coding tools — Claude Code, ChatGPT, Copilot, Cursor, and more. One prompt in, working diagram out.</p>
+<div class="container">
+  <header class="header">
+    <div class="header-top">
+      <span class="badge"><span class="badge-dot"></span> jland-redhat</span>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">&#9654;</div>
-      <h3>Animated Storytelling</h3>
-      <p>Step-by-step narrative flows that tell a story. Animated packets travel between nodes. Inspector panel shows request/response mutations at each step.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">&#128196;</div>
-      <h3>Declarative JSON</h3>
-      <p>Define nodes, flows, tooltips, and inspector mutations in a single JSON object. The engine handles canvas rendering, playback controls, and theming.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">&#128247;</div>
-      <h3>Screenshot Feedback Loop</h3>
-      <p>Generate, screenshot, paste back into your AI tool, describe adjustments. The iterative loop converges fast — usually 3-5 rounds for a polished diagram.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">&#127760;</div>
-      <h3>Zero Install, Zero Dependencies</h3>
-      <p>Generates a single self-contained HTML file. Open in any browser. Share via email, host on GitHub Pages, or drop in a docs folder.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">&#127769;</div>
-      <h3>Dark &amp; Light Themes</h3>
-      <p>Built-in theme toggle. Dark mode by default with a full light mode. All colors adapt automatically via CSS custom properties.</p>
-    </div>
+    <h1>Architecture <span class="accent">Flows</span></h1>
+    <p>Animated, step-by-step diagrams for MaaS and AI Gateway architecture.</p>
+  </header>
+
+  <p class="section-label">Flows</p>
+  <nav class="flows-grid">
+    <a href="flows/ai-gateway/index.html" class="flow-card">
+      <span class="flow-card-tag gateway">AI Gateway</span>
+      <h2>AI Inference Gateway</h2>
+      <p>Red Hat AI Gateway — request/response paths, plugins, auth, scheduling, and external providers.</p>
+      <span class="flow-card-arrow">Open flow &#8594;</span>
+    </a>
+    <a href="flows/maas-inference.html" class="flow-card">
+      <span class="flow-card-tag maas">MaaS</span>
+      <h2>Inference Flow</h2>
+      <p>Auth, rate limiting, and model serving — happy path plus error scenarios.</p>
+      <span class="flow-card-arrow">Open flow &#8594;</span>
+    </a>
+    <a href="flows/maas-key-minting.html" class="flow-card">
+      <span class="flow-card-tag maas">MaaS</span>
+      <h2>Key Minting</h2>
+      <p>API key generation, hashing, and storage through Gateway API and MaaS API.</p>
+      <span class="flow-card-arrow">Open flow &#8594;</span>
+    </a>
+    <a href="flows/maas-multi-tenancy.html" class="flow-card">
+      <span class="flow-card-tag maas">MaaS</span>
+      <h2>Multi-Tenancy</h2>
+      <p>Multi-tenant routing, auth enforcement, rate limiting, and inference.</p>
+      <span class="flow-card-arrow">Open flow &#8594;</span>
+    </a>
+    <a href="flows/maas-policy-creation.html" class="flow-card">
+      <span class="flow-card-tag maas">MaaS</span>
+      <h2>Policy Creation</h2>
+      <p>AuthPolicy and RateLimitPolicy creation, validation, and reconciliation.</p>
+      <span class="flow-card-arrow">Open flow &#8594;</span>
+    </a>
+  </nav>
+
+  <p class="section-label">More</p>
+  <div class="secondary-links">
+    <a href="examples/hello-world/index.html">Hello World example</a>
+    <a href="https://github.com/jland-redhat/flowstory">This repo</a>
+    <a href="https://flowstory.dev" target="_blank" rel="noopener">FlowStory by Noy Tzikow</a>
   </div>
-</section>
 
-<section class="how">
-  <h2>How It Works</h2>
-  <div class="step-list">
-    <div class="step-item">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h3>Open Your AI Coding Tool</h3>
-        <p>Claude Code, ChatGPT, Copilot, Cursor — any tool that can read URLs and write files.</p>
-      </div>
-    </div>
-    <div class="step-item">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h3>Paste the Prompt</h3>
-        <p>Copy the <a href="docs/quick-start-prompt.html">quick-start prompt</a> and add your architecture links + description.</p>
-      </div>
-    </div>
-    <div class="step-item">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h3>AI Generates <code>flow.html</code></h3>
-        <p>A single self-contained HTML file with your animated architecture diagram. Nodes, flows, tooltips, inspector panel — all embedded.</p>
-      </div>
-    </div>
-    <div class="step-item">
-      <div class="step-num">4</div>
-      <div class="step-content">
-        <h3>Iterate with Screenshots</h3>
-        <p>Open in browser, screenshot, paste back into your AI tool, describe changes. 3-5 rounds gets you a polished result.</p>
-      </div>
-    </div>
-    <div class="step-item">
-      <div class="step-num">5</div>
-      <div class="step-content">
-        <h3>Share</h3>
-        <p>Email the HTML file, host on GitHub Pages, or embed in documentation. Works everywhere.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <footer>
+    <p>Built with <a href="https://flowstory.dev" target="_blank" rel="noopener">FlowStory</a> — forked from <a href="https://github.com/noyitz/flowstory" target="_blank" rel="noopener">noyitz/flowstory</a>.</p>
+    <p>Apache 2.0 · <a href="https://github.com/jland-redhat/flowstory">jland-redhat/flowstory</a></p>
+  </footer>
+</div>
 
-<section class="cta">
-  <div class="cta-links">
-    <a href="https://github.com/jland-redhat/flowstory" class="cta-link">GitHub</a>
-    <a href="flows/" class="cta-link">MaaS Flow Gallery</a>
-    <a href="CLAUDE.md" class="cta-link">Schema Reference</a>
-    <a href="docs/agent-prompt.md" class="cta-link">Agent Prompt</a>
-    <a href="docs/quick-start-prompt.html" class="cta-link">Quick Start</a>
-    <a href="examples/ai-gateway/index.html" class="cta-link">Live Demo</a>
-  </div>
-</section>
-
-<footer>
-  <p>FlowStory is open source under the <a href="LICENSE">Apache 2.0 License</a>.</p>
-</footer>
-
-<script>
-(function(){
-const c=document.getElementById('hero-canvas');
-if(!c)return;
-const ctx=c.getContext('2d');
-let W,H,dpr=window.devicePixelRatio||1;
-
-function resize(){
-  const mobile=window.innerWidth<500;
-  c.style.height=(mobile?250:300)+'px';
-  const r=c.getBoundingClientRect();
-  W=r.width;H=r.height;
-  c.width=W*dpr;c.height=H*dpr;
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-}
-resize();
-window.addEventListener('resize',()=>{resize();nodes=buildNodes();arrows=buildArrows();lines=[];step=0;dots=[];});
-
-function buildNodes(){
-  const mobile=W<500;
-  if(mobile){
-    return[
-      {x:.25,y:.08,w:70,h:36,label:'You',sub:'',color:'#58a6ff',icon:true},
-      {x:.7,y:.08,w:80,h:36,label:'Your Docs',sub:'RAG',color:'#8b949e'},
-      {x:.48,y:.32,w:100,h:38,label:'AI Agent',sub:'any tool',color:'#d2a8ff'},
-      {x:.48,y:.58,w:100,h:38,label:'diagram.json',sub:'JSON',color:'#f0883e'},
-      {x:.48,y:.82,w:100,h:38,label:'Animated Flow',sub:'',color:'#3fb950'},
-    ];
-  }
-  return[
-    {x:.08,y:.45,w:90,h:48,label:'You',sub:'describe flow',color:'#58a6ff',icon:true},
-    {x:.28,y:.45,w:110,h:48,label:'AI Agent',sub:'any tool',color:'#d2a8ff'},
-    {x:.52,y:.45,w:100,h:48,label:'diagram.json',sub:'declarative',color:'#f0883e'},
-    {x:.76,y:.45,w:110,h:48,label:'FlowStory',sub:'engine',color:'#3fb950'},
-    {x:.52,y:.1,w:120,h:44,label:'Your Docs',sub:'RAG context',color:'#8b949e'},
-    {x:.76,y:.85,w:120,h:48,label:'Animated Flow',sub:'share anywhere',color:'#58a6ff'},
-  ];
-}
-let nodes=buildNodes();
-function buildArrows(){
-  const mobile=W<500;
-  if(mobile){
-    return[
-      {f:0,t:2,c:'#58a6ff',n:1},
-      {f:1,t:2,c:'#8b949e',n:2},
-      {f:2,t:3,c:'#d2a8ff',n:3},
-      {f:3,t:4,c:'#3fb950',n:4},
-    ];
-  }
-  return[
-    {f:0,t:1,c:'#58a6ff',n:1},
-    {f:4,t:1,c:'#8b949e',n:2},
-    {f:1,t:2,c:'#d2a8ff',n:3},
-    {f:2,t:3,c:'#f0883e',n:4},
-    {f:3,t:5,c:'#3fb950',n:5},
-  ];
-}
-let arrows=buildArrows();
-
-let dots=[],lines=[],step=0,timer=null;
-let ambientParticles=[],ambientMode=true;
-
-function nx(n){return n.x*W}
-function ny(n){return n.y*H}
-
-function drawBox(n,glow){
-  const x=nx(n)-n.w/2,y=ny(n)-n.h/2;
-  ctx.save();
-  if(glow){ctx.shadowColor=n.color;ctx.shadowBlur=20;}
-  ctx.fillStyle=isDark()?'#161b22':'#f6f8fa';
-  ctx.strokeStyle=n.color;ctx.lineWidth=2;
-  ctx.beginPath();ctx.roundRect(x,y,n.w,n.h,8);ctx.fill();ctx.stroke();
-  ctx.shadowBlur=0;
-  const mob=W<500;
-  if(n.icon){
-    ctx.font=(mob?'14px':'20px')+' system-ui';ctx.textAlign='center';ctx.fillStyle=isDark()?'#c9d1d9':'#24292f';
-    ctx.fillText('\u{1F464}',nx(n),ny(n)-2);
-  } else {
-    ctx.font='bold '+(mob?'11px':'13px')+' system-ui';ctx.textAlign='center';ctx.fillStyle=isDark()?'#e2e8f0':'#24292f';
-    ctx.fillText(n.label,nx(n),ny(n)-(n.sub?4:0));
-  }
-  if(n.sub){
-    ctx.font=(mob?'8px':'10px')+' system-ui';ctx.fillStyle=isDark()?'#8b949e':'#656d76';
-    ctx.fillText(n.sub,nx(n),ny(n)+(mob?11:14));
-  }
-  if(n.icon){
-    ctx.font='bold '+(mob?'10px':'12px')+' system-ui';ctx.fillStyle=isDark()?'#e2e8f0':'#24292f';
-    ctx.fillText(n.label,nx(n),ny(n)+n.h/2+(mob?12:16));
-  }
-  ctx.restore();
-}
-
-function getEndpoints(a){
-  const f=nodes[a.f],t=nodes[a.t];
-  let x1=nx(f),y1=ny(f),x2=nx(t),y2=ny(t);
-  const ang=Math.atan2(y2-y1,x2-x1);
-  x1+=Math.cos(ang)*(f.w/2+4);y1+=Math.sin(ang)*(f.h/2+4);
-  x2-=Math.cos(ang)*(t.w/2+4);y2-=Math.sin(ang)*(t.h/2+4);
-  return {x1,y1,x2,y2,ang};
-}
-
-function drawArrow(a,alpha){
-  const {x1,y1,x2,y2,ang}=getEndpoints(a);
-  ctx.save();ctx.globalAlpha=alpha||1;
-  ctx.strokeStyle=a.c;ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
-  const hl=8,ha=.4;
-  ctx.fillStyle=a.c;ctx.beginPath();
-  ctx.moveTo(x2,y2);
-  ctx.lineTo(x2-hl*Math.cos(ang-ha),y2-hl*Math.sin(ang-ha));
-  ctx.lineTo(x2-hl*Math.cos(ang+ha),y2-hl*Math.sin(ang+ha));
-  ctx.fill();
-  const mx=(x1+x2)/2,my=(y1+y2)/2;
-  ctx.fillStyle=isDark()?'#0d1117':'#fff';ctx.strokeStyle=a.c;
-  ctx.beginPath();ctx.arc(mx,my,10,0,Math.PI*2);ctx.fill();ctx.stroke();
-  ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillStyle=a.c;ctx.fillText(a.n,mx,my);
-  ctx.restore();
-}
-
-function drawPartialArrow(a,t){
-  const {x1,y1,x2,y2}=getEndpoints(a);
-  const ex=x1+(x2-x1)*t,ey=y1+(y2-y1)*t;
-  ctx.save();ctx.strokeStyle=a.c;ctx.lineWidth=2;ctx.globalAlpha=.6;
-  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(ex,ey);ctx.stroke();
-  ctx.restore();
-}
-
-function isDark(){return !document.body.classList.contains('light')}
-
-function spawnAmbient(){
-  const fi=Math.floor(Math.random()*nodes.length);
-  let ti=Math.floor(Math.random()*nodes.length);
-  while(ti===fi)ti=Math.floor(Math.random()*nodes.length);
-  const colors=['#58a6ff','#d2a8ff','#f0883e','#3fb950','#79c0ff','#f85149'];
-  ambientParticles.push({
-    f:fi,t:ti,
-    prog:0,
-    speed:.008+Math.random()*.012,
-    color:colors[Math.floor(Math.random()*colors.length)],
-    size:2+Math.random()*3,
-    alpha:.3+Math.random()*.4
-  });
-}
-
-function drawAmbient(){
-  ambientParticles.forEach(p=>{
-    const f=nodes[p.f],t=nodes[p.t];
-    const x1=nx(f),y1=ny(f),x2=nx(t),y2=ny(t);
-    const px=x1+(x2-x1)*p.prog,py=y1+(y2-y1)*p.prog;
-    ctx.save();
-    ctx.globalAlpha=p.alpha*(p.prog<.1?p.prog/.1:p.prog>.9?(1-p.prog)/.1:1);
-    ctx.fillStyle=p.color;
-    ctx.shadowColor=p.color;ctx.shadowBlur=8;
-    ctx.beginPath();ctx.arc(px,py,p.size,0,Math.PI*2);ctx.fill();
-    ctx.restore();
-    p.prog+=p.speed;
-  });
-  ambientParticles=ambientParticles.filter(p=>p.prog<1);
-  if(ambientMode&&Math.random()<.15)spawnAmbient();
-}
-
-function draw(){
-  ctx.clearRect(0,0,W,H);
-  drawAmbient();
-  lines.forEach(a=>drawArrow(a,1));
-  nodes.forEach((n,i)=>{
-    const active=lines.some(a=>a.f===i||a.t===i);
-    drawBox(n,active);
-  });
-  dots.forEach(d=>{
-    drawPartialArrow(d.a,d.t);
-    const {x1,y1,x2,y2}=getEndpoints(d.a);
-    const px=x1+(x2-x1)*d.t,py=y1+(y2-y1)*d.t;
-    ctx.save();ctx.fillStyle=d.a.c;ctx.shadowColor=d.a.c;ctx.shadowBlur=14;
-    ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fill();
-    ctx.restore();
-    d.t+=.018;
-    if(d.t>=1){d.done=true;lines.push(d.a);}
-  });
-  dots=dots.filter(d=>!d.done);
-  requestAnimationFrame(draw);
-}
-
-function runStep(){
-  if(step>=arrows.length){
-    ambientMode=true;
-    setTimeout(()=>{lines=[];step=0;ambientMode=false;ambientParticles=[];runStep();},2500);
-    return;
-  }
-  ambientMode=false;
-  dots.push({a:arrows[step],t:0});
-  step++;
-  timer=setTimeout(runStep,900);
-}
-
-// Chat bubble animation — reveal one by one when scrolled into view
-(function(){
-  const rows=document.querySelectorAll('.bubble-row');
-  let revealed=0;
-  function revealNext(){
-    if(revealed>=rows.length)return;
-    rows[revealed].classList.add('visible');
-    revealed++;
-    if(revealed<rows.length)setTimeout(revealNext,800);
-  }
-  const observer=new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting&&revealed===0){
-        observer.disconnect();
-        revealNext();
-      }
-    });
-  },{threshold:0.2});
-  const comic=document.querySelector('.comic');
-  if(comic)observer.observe(comic);
-})();
-
-for(let i=0;i<8;i++)spawnAmbient();
-draw();
-setTimeout(()=>{ambientMode=false;ambientParticles=[];runStep();},1800);
-})();
-</script>
 </body>
 </html>
