@@ -12,6 +12,7 @@ This fork hosts interactive architecture diagrams for AI Gateway and MaaS. Brows
 | MaaS Inference | [Open](https://jaland.github.io/flowstory/flows/maas-inference.html) |
 | MaaS Key Minting | [Open](https://jaland.github.io/flowstory/flows/maas-key-minting.html) |
 | MaaS Multi-Tenancy | [Open](https://jaland.github.io/flowstory/flows/maas-multi-tenancy.html) |
+| Multi-Cluster Minting & Inference | [Open](https://jaland.github.io/flowstory/flows/multicluster-minting-inference.html) |
 | Multi-Tenancy Deployment | [Open](https://jaland.github.io/flowstory/flows/maas-multi-tenancy-deployment.html) |
 
 ## Examples

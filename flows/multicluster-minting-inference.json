@@ -1,0 +1,503 @@
+{
+  "meta": {
+    "title": "Multi-Cluster Key Minting & Inference",
+    "author": "James Land",
+    "branding": {
+      "title": "OpenShift AI"
+    }
+  },
+  "canvas": {
+    "width": 1400,
+    "height": 1100
+  },
+  "flowOrder": ["mint-key", "inference-client1", "inference-client2"],
+  "defaultFlow": "mint-key",
+  "nodes": {
+    "user": {
+      "x": -80,
+      "y": 520,
+      "w": 120,
+      "h": 60,
+      "label": "User",
+      "type": "icon"
+    },
+    "hub-cluster": {
+      "x": 280,
+      "y": 30,
+      "w": 840,
+      "h": 340,
+      "label": "Hub Cluster",
+      "sublabel": "Key minting enabled",
+      "type": "boundary",
+      "color": "#f0883e",
+      "bgColor": "#fff5ed",
+      "labelAlign": "left"
+    },
+    "hub-gateway": {
+      "x": 310,
+      "y": 80,
+      "w": 780,
+      "h": 58,
+      "label": "maas-default-gateway",
+      "sublabel": "maas.<hub-domain>",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "hub-maas-api": {
+      "x": 320,
+      "y": 160,
+      "w": 180,
+      "h": 58,
+      "label": "maas-api",
+      "sublabel": "mint + validate",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "hub-postgres": {
+      "x": 320,
+      "y": 240,
+      "w": 180,
+      "h": 70,
+      "label": "PostgreSQL",
+      "sublabel": "Shared DB",
+      "color": "#3fb950",
+      "inner": true,
+      "stackCount": 2,
+      "stackOffset": { "dx": 0, "dy": 4 }
+    },
+    "hub-subscription": {
+      "x": 720,
+      "y": 160,
+      "w": 350,
+      "h": 70,
+      "label": "MaaSSubscription",
+      "sublabel": "MaaSAuthPolicy · simulator-subscription",
+      "color": "#d2a8ff",
+      "inner": true
+    },
+    "hub-models": {
+      "x": 720,
+      "y": 250,
+      "w": 350,
+      "h": 60,
+      "label": "Model",
+      "sublabel": "facebook-opt-125m-simulated",
+      "color": "#8b949e",
+      "inner": true
+    },
+    "client1-cluster": {
+      "x": 70,
+      "y": 420,
+      "w": 590,
+      "h": 230,
+      "label": "Client 1 Cluster",
+      "sublabel": "Validation + inference only",
+      "type": "boundary",
+      "color": "#58a6ff",
+      "bgColor": "#f0f8ff",
+      "labelAlign": "left"
+    },
+    "c1-gateway": {
+      "x": 100,
+      "y": 470,
+      "w": 530,
+      "h": 58,
+      "label": "maas-default-gateway",
+      "sublabel": "maas.<client1-domain>",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "c1-maas-api": {
+      "x": 110,
+      "y": 550,
+      "w": 180,
+      "h": 58,
+      "label": "maas-api",
+      "sublabel": "validate only",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "c1-subscription": {
+      "x": 310,
+      "y": 550,
+      "w": 150,
+      "h": 70,
+      "label": "MaaSSubscription",
+      "sublabel": "MaaSAuthPolicy",
+      "color": "#d2a8ff",
+      "inner": true,
+      "fontSize": 14
+    },
+    "c1-models": {
+      "x": 480,
+      "y": 550,
+      "w": 140,
+      "h": 70,
+      "label": "Model",
+      "sublabel": "opt-125m",
+      "color": "#8b949e",
+      "inner": true
+    },
+    "client2-cluster": {
+      "x": 740,
+      "y": 420,
+      "w": 590,
+      "h": 230,
+      "label": "Client 2 Cluster",
+      "sublabel": "Identical to Client 1",
+      "type": "boundary",
+      "color": "#58a6ff",
+      "bgColor": "#f0f8ff",
+      "labelAlign": "left"
+    },
+    "c2-gateway": {
+      "x": 770,
+      "y": 470,
+      "w": 530,
+      "h": 58,
+      "label": "maas-default-gateway",
+      "sublabel": "maas.<client2-domain>",
+      "color": "#f0883e",
+      "inner": true
+    },
+    "c2-maas-api": {
+      "x": 780,
+      "y": 550,
+      "w": 180,
+      "h": 58,
+      "label": "maas-api",
+      "sublabel": "validate only",
+      "color": "#58a6ff",
+      "inner": true
+    },
+    "c2-subscription": {
+      "x": 980,
+      "y": 550,
+      "w": 150,
+      "h": 70,
+      "label": "MaaSSubscription",
+      "sublabel": "MaaSAuthPolicy",
+      "color": "#d2a8ff",
+      "inner": true,
+      "fontSize": 14
+    },
+    "c2-models": {
+      "x": 1150,
+      "y": 550,
+      "w": 140,
+      "h": 70,
+      "label": "Model",
+      "sublabel": "opt-125m",
+      "color": "#8b949e",
+      "inner": true
+    }
+  },
+  "tooltips": {
+    "hub-cluster": {
+      "title": "Hub Cluster",
+      "description": "Control plane for shared API key storage. Users mint keys here. PostgreSQL is the single source of truth — client clusters validate against the same database.",
+      "details": [
+        ["Role", "Mint keys + host shared DB"],
+        ["Key minting", "Enabled (no deny policy)"],
+        ["Subscription name", "simulator-subscription (must match clients)"]
+      ]
+    },
+    "hub-postgres": {
+      "title": "Hub PostgreSQL",
+      "description": "Ephemeral Postgres in the postgres namespace. Stores hashed API keys and subscription bindings. All clusters connect to this database for key validation via a cross-cluster Route.",
+      "details": [
+        ["Namespace", "postgres"],
+        ["In-cluster URL", "postgres.postgres.svc:5432"],
+        ["Cross-cluster", "postgres-hub Route on :443"],
+        ["Data stored", "bcrypt hash + subscription binding"]
+      ]
+    },
+    "hub-subscription": {
+      "title": "MaaSSubscription & MaaSAuthPolicy",
+      "description": "Combined subscription and auth policy CRs. The subscription name MUST match across all clusters (hub + clients) for keys to work everywhere.",
+      "details": [
+        ["Subscription name", "simulator-subscription"],
+        ["CRITICAL", "Name must match on all clusters"],
+        ["Auth policy", "Validates API keys via maas-api"],
+        ["Rate limiting", "Enforced per subscription"]
+      ]
+    },
+    "c1-subscription": {
+      "title": "MaaSSubscription & MaaSAuthPolicy",
+      "description": "Combined subscription and auth policy CRs. The subscription name MUST match the hub cluster's subscription for cross-cluster key validation to work.",
+      "details": [
+        ["Subscription name", "simulator-subscription"],
+        ["CRITICAL", "Must match hub cluster name"],
+        ["Auth policy", "Validates via hub PostgreSQL"],
+        ["Rate limiting", "Enforced per subscription"]
+      ]
+    },
+    "c2-subscription": {
+      "title": "MaaSSubscription & MaaSAuthPolicy",
+      "description": "Combined subscription and auth policy CRs. The subscription name MUST match the hub cluster's subscription for cross-cluster key validation to work.",
+      "details": [
+        ["Subscription name", "simulator-subscription"],
+        ["CRITICAL", "Must match hub cluster name"],
+        ["Auth policy", "Validates via hub PostgreSQL"],
+        ["Rate limiting", "Enforced per subscription"]
+      ]
+    },
+    "client1-cluster": {
+      "title": "Client 1 Cluster",
+      "description": "Inference spoke. maas-api runs in validation-only mode — it reads the hub PostgreSQL for key lookup. Public key-management APIs are blocked by Kuadrant AuthPolicy.",
+      "details": [
+        ["Role", "Inference + key validation"],
+        ["Key minting", "Blocked (403 on /v1/api-keys*)"],
+        ["DB", "Cross-cluster via hub Route"],
+        ["Subscription", "simulator-subscription (matches hub)"]
+      ]
+    },
+    "client2-cluster": {
+      "title": "Client 2 Cluster",
+      "description": "Functionally identical to Client 1. Same manifests, same subscription names, same hub DB connection. A key minted on the hub works on either client.",
+      "details": [
+        ["Role", "Inference + key validation"],
+        ["Difference from Client 1", "None (different cluster only)"],
+        ["Subscription", "simulator-subscription (matches hub)"]
+      ]
+    },
+    "c1-models": {
+      "title": "Models & LLM",
+      "description": "Simulated LLM inference service. Same model subscription runs on hub and all client clusters. Gateway routes validated requests here for chat completions.",
+      "details": [
+        ["Model", "facebook-opt-125m-simulated"],
+        ["Namespace", "llm"],
+        ["Subscription", "simulator-subscription"]
+      ]
+    }
+  },
+  "flows": {
+    "mint-key": {
+      "label": "Mint API Key on Hub",
+      "steps": [
+        {
+          "text": "User mints API key on hub with OpenShift token",
+          "mode": "arrow",
+          "from": "user",
+          "to": "hub-gateway",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 50, "y": 550 },
+            { "x": 50, "y": 109 }
+          ]
+        },
+        {
+          "text": "POST /maas-api/v1/api-keys → gateway routes to maas-api",
+          "mode": "arrow",
+          "from": "hub-gateway",
+          "to": "hub-maas-api",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromBottom": true,
+          "toTop": true
+        },
+        {
+          "text": "Key hash + subscription binding stored in PostgreSQL",
+          "mode": "arrow",
+          "from": "hub-maas-api",
+          "to": "hub-postgres",
+          "color": "#3fb950",
+          "num": 3,
+          "fromBottom": true,
+          "toTop": true
+        },
+        {
+          "text": "Plaintext key returned to user (shown once only)",
+          "mode": "arrow",
+          "from": "hub-gateway",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 4,
+          "fromLeft": true,
+          "toRight": true,
+          "waypoints": [
+            { "x": 60, "y": 109 },
+            { "x": 60, "y": 550 }
+          ]
+        },
+        {
+          "text": "Key now usable on any client cluster",
+          "mode": "lightup",
+          "target": "hub-postgres",
+          "badge": "✓"
+        }
+      ]
+    },
+    "inference-client1": {
+      "label": "Inference on Client 1",
+      "steps": [
+        {
+          "text": "User sends inference request to Client 1 with hub-minted key",
+          "mode": "arrow",
+          "from": "user",
+          "to": "c1-gateway",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Gateway routes to maas-api for validation",
+          "mode": "arrow",
+          "from": "c1-gateway",
+          "to": "c1-maas-api",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromBottom": true,
+          "toTop": true
+        },
+        {
+          "text": "maas-api validates key against hub PostgreSQL",
+          "mode": "arrow",
+          "from": "c1-maas-api",
+          "to": "hub-postgres",
+          "color": "#79c0ff",
+          "num": 3,
+          "fromTop": true,
+          "toBottom": true,
+          "waypoints": [
+            { "x": 200, "y": 390 },
+            { "x": 410, "y": 390 }
+          ]
+        },
+        {
+          "text": "Key validated ✓ — request routed through subscription",
+          "mode": "arrow",
+          "from": "c1-maas-api",
+          "to": "c1-subscription",
+          "color": "#3fb950",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Subscription routes to Model for inference",
+          "mode": "arrow",
+          "from": "c1-subscription",
+          "to": "c1-models",
+          "color": "#3fb950",
+          "num": 5,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Model generates completion",
+          "mode": "lightup",
+          "target": "c1-models",
+          "badge": 6
+        },
+        {
+          "text": "Response returned to user via gateway",
+          "mode": "arrow",
+          "from": "c1-gateway",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 7,
+          "fromLeft": true,
+          "toRight": true
+        }
+      ]
+    },
+    "inference-client2": {
+      "label": "Inference on Client 2",
+      "steps": [
+        {
+          "text": "User sends inference request to Client 2 with same key",
+          "mode": "arrow",
+          "from": "user",
+          "to": "c2-gateway",
+          "color": "#58a6ff",
+          "num": 1,
+          "fromRight": true,
+          "toLeft": true,
+          "waypoints": [
+            { "x": 50, "y": 550 },
+            { "x": 50, "y": 400 },
+            { "x": 1035, "y": 400 }
+          ]
+        },
+        {
+          "text": "Gateway routes to maas-api for validation",
+          "mode": "arrow",
+          "from": "c2-gateway",
+          "to": "c2-maas-api",
+          "color": "#58a6ff",
+          "num": 2,
+          "fromBottom": true,
+          "toTop": true
+        },
+        {
+          "text": "maas-api validates against same hub PostgreSQL",
+          "mode": "arrow",
+          "from": "c2-maas-api",
+          "to": "hub-postgres",
+          "color": "#79c0ff",
+          "num": 3,
+          "fromTop": true,
+          "toBottom": true,
+          "waypoints": [
+            { "x": 870, "y": 390 },
+            { "x": 410, "y": 390 }
+          ]
+        },
+        {
+          "text": "Key validated ✓ — request routed through subscription",
+          "mode": "arrow",
+          "from": "c2-maas-api",
+          "to": "c2-subscription",
+          "color": "#3fb950",
+          "num": 4,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Subscription routes to Model for inference",
+          "mode": "arrow",
+          "from": "c2-subscription",
+          "to": "c2-models",
+          "color": "#3fb950",
+          "num": 5,
+          "fromRight": true,
+          "toLeft": true
+        },
+        {
+          "text": "Model generates completion",
+          "mode": "lightup",
+          "target": "c2-models",
+          "badge": 6
+        },
+        {
+          "text": "Response returned to user via gateway",
+          "mode": "arrow",
+          "from": "c2-gateway",
+          "to": "user",
+          "color": "#3fb950",
+          "num": 7,
+          "fromLeft": true,
+          "toRight": true,
+          "waypoints": [
+            { "x": 1035, "y": 410 },
+            { "x": 50, "y": 410 },
+            { "x": 50, "y": 550 }
+          ]
+        }
+      ]
+    }
+  },
+  "legend": [
+    { "label": "Hub cluster", "color": "#f0883e" },
+    { "label": "Client clusters", "color": "#58a6ff" },
+    { "label": "Shared PostgreSQL", "color": "#3fb950" },
+    { "label": "Cross-cluster validation", "color": "#79c0ff" },
+    { "label": "Subscription/Policy", "color": "#d2a8ff" },
+    { "label": "Key mint blocked", "color": "#f85149" }
+  ]
+}
